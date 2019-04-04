@@ -1,0 +1,32 @@
+﻿<Window x:Class="Ролевая_игра__WPF_.AddHero" Name="NewHeroWindow" Title="Новый герой" Height="300" Width="600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Grid Margin="15">
+    <Label Content="Имя" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="37" />
+    <TextBox Name="TextBox_NameOfHero" HorizontalAlignment="Left" Height="23" Margin="47,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="426" MouseEnter="TextBox_MouseEnter" MouseLeave="TextBlock_Clear" TextChanged="TextBox_NameOfHero_TextChanged" />
+    <GroupBox Header="Пол" HorizontalAlignment="Left" Height="78" Margin="10,41,0,0" VerticalAlignment="Top" Width="100">
+      <StackPanel>
+        <RadioButton Name="RadioButton_Hero_Male" Content="Герой" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" MouseEnter="RadioButton_Hero_Male_MouseEnter" Click="RadioButton_Hero_Male_Click" />
+        <RadioButton Name="RadioButton_Hero_Female" Content="Героиня" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" MouseEnter="RadioButton_Hero_Female_MouseEnter" Click="RadioButton_Hero_Female_Click" />
+      </StackPanel>
+    </GroupBox>
+    <GroupBox Name="GroupBox_Race" Header="Раса" HorizontalAlignment="Left" Height="156" Margin="126,41,0,0" VerticalAlignment="Top" Width="107">
+      <StackPanel Margin="0,0,0.4,0.2">
+        <RadioButton Name="RadioButton_Race_Human" Content="Человек" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Checked="RadioButton_Race_Human_Checked" MouseEnter="RadioButton_Race_Human_MouseEnter" />
+        <RadioButton Name="RadioButton_Race_Dwarf" Content="Гном" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Checked="RadioButton_Race_Dwarf_Checked" MouseEnter="RadioButton_Race_Dwarf_MouseEnter" />
+        <RadioButton Name="RadioButton_Race_Elf" Content="Эльф" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Checked="RadioButton_Race_Elf_Checked" MouseEnter="RadioButton_Race_Elf_MouseEnter" />
+        <RadioButton Name="RadioButton_Race_Ork" Content="Орк" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Checked="RadioButton_Race_Ork_Checked" MouseEnter="RadioButton_Race_Ork_MouseEnter" />
+        <RadioButton Name="RadioButton_Race_Goblin" Content="Гоблин" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Checked="RadioButton_Race_Goblin_Checked" MouseEnter="RadioButton_Race_Goblin_MouseEnter" />
+      </StackPanel>
+    </GroupBox>
+    <TextBlock Name="TextBlock_Description" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="543" Height="38" Margin="10,202,0,0" />
+    <Button Name="Button_Accept" Content="Создать" HorizontalAlignment="Left" Margin="478,10,0,0" VerticalAlignment="Top" Width="75" Height="23" IsDefault="True" IsEnabled="False" Click="Button_Accept_Click" MouseEnter="Button_Accept_MouseEnter" />
+    <GroupBox Header="Возраст" HorizontalAlignment="Left" Height="73" Margin="10,124,0,0" VerticalAlignment="Top" Width="100">
+      <TextBox Name="TextBox_Age" HorizontalAlignment="Left" Height="23" Margin="18,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="54" TextChanged="TextBox_TextChanged" />
+    </GroupBox>
+    <GroupBox Name="GroupBox_HaveMagic" Header="Обладает магией" HorizontalAlignment="Left" Height="78" Margin="238,41,0,0" VerticalAlignment="Top" Width="128">
+      <StackPanel Margin="0,0,0.4,0.2" MouseEnter="StackPanel_MouseEnter">
+        <RadioButton Name="Hero_DoHaveMagic" Content="Да" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Hero_DoHaveMagic_Click" />
+        <RadioButton Name="Hero_DoNotHaveMagic" Content="Нет" Margin="10,10,0,52.6" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Hero_DoNotHaveMagic_Click" />
+      </StackPanel>
+    </GroupBox>
+  </Grid>
+</Window>
