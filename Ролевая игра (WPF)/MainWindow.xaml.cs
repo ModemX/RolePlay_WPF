@@ -2,19 +2,19 @@
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
-using System.Data;
-using System.IO;
 
 namespace Ролевая_игра__WPF_
 {
     public partial class MainWindow : Window
     {
         private AddHero AddHeroWindow;
-        private List<object> Персонажи = new List<object>();
+        private List<Персонаж> Персонажи = new List<Персонаж>();
         private List<bool> Обладает_магией = new List<bool>();
         private string ConsoleBuffer;
         private int ТекущийПерсонаж;
@@ -22,7 +22,7 @@ namespace Ролевая_игра__WPF_
         public MainWindow()
         {
             InitializeComponent();
-            Console.Text = "Добро пожаловать, герой. Я твой рассказчик, Система Одностороннего Повествования \nИстории, но можешь называть меня СОПИ ♥. \nДля начала предалагаю начать с создания твоего героя.\n";
+            Console.Text = "Добро пожаловать, герой. Я твой рассказчик, Система Одностороннего Повествования \nИстории, но можешь называть меня СОПИ ♥. \nДля начала предалагаю начать с создания твоего героя или загрузить свое прохождение из прошлой жизни.\n";
             ТекущийПерсонаж = 0;
         }
 
@@ -83,11 +83,19 @@ namespace Ролевая_игра__WPF_
             if ((string)MainWindow_Button_ShowInfo.Content == "Вернуться к \nповествованию")
             {
                 MainWindow_Button_ShowInfo.Content = "Состояние текущего \nгероя";
+                Button_Inventory.IsEnabled = true;
+                Button_Load.IsEnabled = true;
+                Button_Save.IsEnabled = true;
                 Console.Text = ConsoleBuffer;
             }
             else
             {
                 MainWindow_Button_ShowInfo.Content = "Вернуться к \nповествованию";
+
+                Button_Inventory.IsEnabled = false;
+                Button_Load.IsEnabled = false;
+                Button_Save.IsEnabled = false;
+
                 ConsoleBuffer = Console.Text;
                 if (Обладает_магией[ТекущийПерсонаж] == false)
                 {
@@ -116,13 +124,14 @@ namespace Ролевая_игра__WPF_
 
         private void Button_Save_Click(object sender, RoutedEventArgs e)
         {
-            bool HasErrors = false;
             //Сохранение информации о персонажах
             try
             {
                 DataSet ds = new DataSet();
-                DataTable dt = new DataTable();
-                dt.TableName = "Персонажи";
+                DataTable dt = new DataTable
+                {
+                    TableName = "Персонажи"
+                };
                 dt.Columns.Add("ID");
                 dt.Columns.Add("Имя");
                 dt.Columns.Add("Раса");
@@ -143,9 +152,9 @@ namespace Ролевая_игра__WPF_
                 dt.Columns.Add("Очки_маны");
                 ds.Tables.Add(dt);
 
-                for(int i = 0; i < Персонажи.Count; i++)
+                for (int i = 0; i < Персонажи.Count; i++)
                 {
-                    if(Обладает_магией[i] == false)
+                    if (Обладает_магией[i] == false)
                     {
                         Персонаж персонаж = Персонажи[i] as Персонаж;
                         DataRow строка = ds.Tables["Персонажи"].NewRow();
@@ -192,34 +201,18 @@ namespace Ролевая_игра__WPF_
                         ds.Tables["Персонажи"].Rows.Add(строка);
                     }
                 }
-                ds.WriteXml("HeroSaveFile.svfl");
-            }
-            catch (Exception ex)
-            {
-                StreamWriter streamWriter = new StreamWriter("ErrorLog.log");
-                streamWriter.Write(ex);
-                MessageBox.Show($"Произошла ошибка при сохранении. В директории с игрой был создан лог файл для отладки", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                streamWriter.Close();
-            }
-            //Сохранение консоли и прочего (Инвентарь?)
-            try
-            {
-                DataSet ds = new DataSet();
-                DataTable dt = new DataTable();
-                dt.TableName = "Прочее";
-                dt.Columns.Add("Консоль");
-
+                dt = new DataTable
+                {
+                    TableName = "Консоль"
+                };
+                dt.Columns.Add("Консоль_Текст");
                 ds.Tables.Add(dt);
+                DataRow СтрокаКонсоли = ds.Tables["Консоль"].NewRow();
+                СтрокаКонсоли["Консоль_Текст"] = Console.Text;
+                ds.Tables["Консоль"].Rows.Add(СтрокаКонсоли);
 
-                DataRow строка = ds.Tables["Прочее"].NewRow();
-                строка["Консоль"] = Console.Text;
-                ds.Tables["Прочее"].Rows.Add(строка);
-
-                ds.WriteXml("JourneySaveFile.svfl");
-                if(HasErrors == false)
-                    MessageBox.Show("Игра сохранена", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-                else
-                    MessageBox.Show($"Сохранение не завершено", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                ds.WriteXml("SaveFile.svfl");
+                MessageBox.Show($"Игра сохранена", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             catch (Exception ex)
             {
@@ -238,8 +231,8 @@ namespace Ролевая_игра__WPF_
             }
             else
             {
-                var DialogResult = MessageBox.Show("Вы уверены что хотите загрузить игру? Текущая игра будет безвозвратно утеряна", "Подтвердить действие?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if(DialogResult == MessageBoxResult.Yes)
+                MessageBoxResult DialogResult = MessageBox.Show("Вы уверены что хотите загрузить игру? Текущая игра будет безвозвратно утеряна", "Подтвердить действие?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (DialogResult == MessageBoxResult.Yes)
                 {
                     DoLoadFile();
                 }
@@ -247,11 +240,12 @@ namespace Ролевая_игра__WPF_
         }
         void DoLoadFile()
         {
-            if (File.Exists("HeroSaveFile.svfl"))
+            if (File.Exists("SaveFile.svfl"))
             {
-                DataSet ds = new DataSet();
-                ds.ReadXml("HeroSaveFile.svfl");
+                Персонажи.Clear();
 
+                DataSet ds = new DataSet();
+                ds.ReadXml("SaveFile.svfl");
                 foreach (DataRow строка in ds.Tables["Персонажи"].Rows)
                 {
                     if (строка[5] as string == "True")
@@ -296,47 +290,26 @@ namespace Ролевая_игра__WPF_
                             Convert.ToUInt32(строка["Очки_Опыта"])
                             ));
                     }
-                    StreamReader streamReader = new StreamReader("JourneySaveFile.svfl");
-                    Console.Text = streamReader.ReadToEnd();
                 }
-            }
-            else
-            {
-                MessageBox.Show("Файл сохранения не найден. Убедитесь что файл сохранения располагается в директории с игрой", "Ошибка.", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
 
-            if (File.Exists("JourneySaveFile.svfl"))
-            {
-                DataSet ds = new DataSet();
-                ds.ReadXml("JourneySaveFile.svfl");
+                DataRow СтрокиКонсоли = ds.Tables["Консоль"].Rows[0];
+                Console.Text = Convert.ToString(СтрокиКонсоли["Консоль_Текст"]);
 
-                foreach (DataRow строка in ds.Tables["Прочее"].Rows)
+                ТекущийПерсонаж = Персонажи.Count - 1;
+                foreach (Персонаж Перс in Персонажи)
                 {
-                    if (строка[5] as string == "True")
+                    if (Перс is Персонаж_с_магией)
                     {
-                        Персонажи.Add(new Персонаж_с_магией(
-                            Convert.ToUInt32(строка["ID"]),
-                            Convert.ToString(строка["Имя"]),
-                            Convert.ToBoolean(строка["Пол"]),
-                            Convert.ToUInt32(строка["Возраст"]),
-                            Convert.ToString(строка["Раса"]),
-                            Convert.ToBoolean(строка["Ослаблен"]),
-                            Convert.ToBoolean(строка["Болен"]),
-                            Convert.ToBoolean(строка["Отравлен"]),
-                            Convert.ToBoolean(строка["Парализован"]),
-                            Convert.ToBoolean(строка["Мёртв"]),
-                            Convert.ToBoolean(строка["Может_говорить"]),
-                            Convert.ToBoolean(строка["Может_двигаться"]),
-                            Convert.ToUInt32(строка["Максимальное_здоровье"]),
-                            Convert.ToUInt32(строка["Очки_Здоровья"]),
-                            Convert.ToUInt32(строка["Очки_Опыта"]),
-                            Convert.ToUInt32(строка["Максимальная_мана"]),
-                            Convert.ToUInt32(строка["Очки_Маны"])
-                            ));
+                        Обладает_магией.Add(true);
                     }
-                    StreamReader streamReader = new StreamReader("JourneySaveFile.svfl");
-                    Console.Text = streamReader.ReadToEnd();
+                    else
+                    {
+                        Обладает_магией.Add(false);
+                    }
                 }
+
+                MainWindow_Button_ShowInfo.IsEnabled = true;
+                Button_Save.IsEnabled = true;
             }
             else
             {
