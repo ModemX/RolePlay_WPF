@@ -59,8 +59,15 @@
     <Compile Include="AddHero.xaml.cs">
       <DependentUpon>AddHero.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Inventory.xaml.cs">
+      <DependentUpon>Inventory.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Персонаж.cs" />
     <Page Include="AddHero.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Inventory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

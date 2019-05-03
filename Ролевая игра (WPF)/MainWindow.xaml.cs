@@ -316,5 +316,10 @@ namespace Ролевая_игра__WPF_
                 MessageBox.Show("Файл сохранения не найден. Убедитесь что файл сохранения располагается в директории с игрой", "Ошибка.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void Button_Inventory_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
