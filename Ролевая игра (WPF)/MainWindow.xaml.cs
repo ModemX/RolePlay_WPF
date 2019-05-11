@@ -14,8 +14,10 @@ namespace Ролевая_игра__WPF_
     public partial class MainWindow : Window
     {
         private AddHero AddHeroWindow;
+        private Inventory InventoryWindow;
         private List<Персонаж> Персонажи = new List<Персонаж>();
         private List<bool> Обладает_магией = new List<bool>();
+        List<Предметы.Зелье> ПереченьПредметов = new List<Предметы.Зелье>();
         private string ConsoleBuffer;
         private int ТекущийПерсонаж;
 
@@ -24,6 +26,14 @@ namespace Ролевая_игра__WPF_
             InitializeComponent();
             Console.Text = "Добро пожаловать, герой. Я твой рассказчик, Система Одностороннего Повествования \nИстории, но можешь называть меня СОПИ ♥. \nДля начала предалагаю начать с создания твоего героя или загрузить свое прохождение из прошлой жизни.\n";
             ТекущийПерсонаж = 0;
+
+            ПереченьПредметов.Add(new Предметы.Малое_Зелье_Лечения());
+            ПереченьПредметов.Add(new Предметы.Среднее_Зелье_Лечения());
+            ПереченьПредметов.Add(new Предметы.Большое_Зелье_Лечения());
+            ПереченьПредметов.Add(new Предметы.Бутылек_Маны());
+            ПереченьПредметов.Add(new Предметы.Фласка_маны());
+            ПереченьПредметов.Add(new Предметы.Банка_маны());
+
         }
 
         private void MainWindow_Button_AddHero_Click(object sender, RoutedEventArgs e)
@@ -69,7 +79,7 @@ namespace Ролевая_игра__WPF_
                 }
                 MainWindow_Button_ShowInfo.IsEnabled = true;
                 Button_Save.IsEnabled = true;
-                //Button_Inventory.IsEnabled = true;
+                Button_Inventory.IsEnabled = true;
                 ТекущийПерсонаж = Персонажи.Count - 1;
             }
             if (Персонажи.Count >= 2)
@@ -87,6 +97,7 @@ namespace Ролевая_игра__WPF_
                 Button_Load.IsEnabled = true;
                 Button_Save.IsEnabled = true;
                 Console.Text = ConsoleBuffer;
+                MainWindow_Button_SwitchHero.IsEnabled = true;
             }
             else
             {
@@ -95,6 +106,7 @@ namespace Ролевая_игра__WPF_
                 Button_Inventory.IsEnabled = false;
                 Button_Load.IsEnabled = false;
                 Button_Save.IsEnabled = false;
+                MainWindow_Button_SwitchHero.IsEnabled = false;
 
                 ConsoleBuffer = Console.Text;
                 if (Обладает_магией[ТекущийПерсонаж] == false)
@@ -237,6 +249,8 @@ namespace Ролевая_игра__WPF_
                     DoLoadFile();
                 }
             }
+            Button_Inventory.IsEnabled = true;
+            MainWindow_Button_SwitchHero.IsEnabled = true;
         }
         void DoLoadFile()
         {
@@ -319,7 +333,8 @@ namespace Ролевая_игра__WPF_
 
         private void Button_Inventory_Click(object sender, RoutedEventArgs e)
         {
-
+            InventoryWindow = new Inventory(Персонажи, ПереченьПредметов);
+            InventoryWindow.ShowDialog();
         }
     }
 }

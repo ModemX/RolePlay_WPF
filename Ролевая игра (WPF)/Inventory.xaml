@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ролевая_игра__WPF_"
         mc:Ignorable="d"
-        Title="Инвентарь персонажей" Height="450" Width="800" ResizeMode="NoResize">
+        Title="Инвентарь персонажей" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
-        <ListBox x:Name="ListBox" HorizontalAlignment="Left" Height="334" Margin="10,10,0,0" VerticalAlignment="Top" Width="584" SelectionChanged="ListBox_SelectionChanged"/>
-        <Button x:Name="Button_Use" Content="Использовать" HorizontalAlignment="Left" Margin="641,67,0,0" VerticalAlignment="Top" Width="100" Height="35"/>
-        <ComboBox HorizontalAlignment="Left" Margin="599,40,0,0" VerticalAlignment="Top" Width="185"/>
+        <ListBox x:Name="Список_Предметов" HorizontalAlignment="Left" Height="400" Margin="10,10,0,0" VerticalAlignment="Top" Width="584" SelectionChanged="Список_Предметов_SelectionChanged"/>
+        <Button x:Name="Button_Use" Content="Использовать" HorizontalAlignment="Left" Margin="641,67,0,0" VerticalAlignment="Top" Width="100" Height="35" IsEnabled="False" IsDefault="True" Click="Button_Use_Click"/>
+        <ComboBox x:Name="Выпадающий_Список_Персонажей" HorizontalAlignment="Left" Margin="599,40,0,0" VerticalAlignment="Top" Width="185" SelectionChanged="Выпадающий_Список_Персонажей_SelectionChanged"/>
         <Label Content="Использовать на:" HorizontalAlignment="Left" Margin="599,10,0,0" VerticalAlignment="Top" Width="185"/>
 
     </Grid>

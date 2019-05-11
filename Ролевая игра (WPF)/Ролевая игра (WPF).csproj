@@ -63,6 +63,7 @@
       <DependentUpon>Inventory.xaml</DependentUpon>
     </Compile>
     <Compile Include="Персонаж.cs" />
+    <Compile Include="Предметы.cs" />
     <Page Include="AddHero.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
