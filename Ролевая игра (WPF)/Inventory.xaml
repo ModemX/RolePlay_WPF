@@ -11,6 +11,12 @@
         <Button x:Name="Button_Use" Content="Использовать" HorizontalAlignment="Left" Margin="641,67,0,0" VerticalAlignment="Top" Width="100" Height="35" IsEnabled="False" IsDefault="True" Click="Button_Use_Click"/>
         <ComboBox x:Name="Выпадающий_Список_Персонажей" HorizontalAlignment="Left" Margin="599,40,0,0" VerticalAlignment="Top" Width="185" SelectionChanged="Выпадающий_Список_Персонажей_SelectionChanged"/>
         <Label Content="Использовать на:" HorizontalAlignment="Left" Margin="599,10,0,0" VerticalAlignment="Top" Width="185"/>
+        <GroupBox Header="Информация о герое" HorizontalAlignment="Left" Height="98" Margin="599,122,0,0" VerticalAlignment="Top" Width="185">
+            <StackPanel Margin="0,0,-3,-1.4" Orientation="Vertical">
+                <Label Content="Здоровье: N/A" HorizontalAlignment="Left" VerticalAlignment="Top" Width="103" Margin="10,10,0,0"/>
+                <Label Content="Мана: N/A" Margin="10,10,0,0"/>
+            </StackPanel>
+        </GroupBox>
 
     </Grid>
 </Window>

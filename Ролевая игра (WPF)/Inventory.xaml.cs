@@ -157,5 +157,7 @@ namespace Ролевая_игра__WPF_
             }
             return -1;
         }
+
+        public List<Предметы.Зелье> GetInventory() => ПереченьПредметов;
     }
 }
