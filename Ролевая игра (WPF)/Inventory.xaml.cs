@@ -57,11 +57,20 @@ namespace Ролевая_игра__WPF_
             {
                 Button_Use.IsEnabled = true;
             }
+            Info_HP.Content = "Здоровье: " + Персонажи[Выпадающий_Список_Персонажей.SelectedIndex].Очки_Здоровья + " HP";
+            if (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] is Персонаж_с_магией)
+            {
+                Info_MP.Content = "Мана: " + (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] as Персонаж_с_магией).Очки_Маны + " MP";
+            }
+            else
+            {
+                Info_MP.Content = "Мана: N/A";
+            }
         }
 
         private void Button_Use_Click(object sender, RoutedEventArgs e)
         {
-            if ((string)Список_Предметов.SelectedItem == "Малое зелье лечения [+25 ОЗ]")
+            if ((string)Список_Предметов.SelectedItem == "[+25 ОЗ] Малое зелье лечения")
             {
                 foreach (Персонаж Текущий_Персонаж in Персонажи)
                 {
@@ -73,7 +82,7 @@ namespace Ролевая_игра__WPF_
                 ПереченьПредметов.RemoveAt(SearchForItem((string)Список_Предметов.SelectedItem));
                 ReloadInventoryList();
             }
-            else if ((string)Список_Предметов.SelectedItem == "Среднее зелье лечения [+50 ОЗ]")
+            else if ((string)Список_Предметов.SelectedItem == "[+50 ОЗ] Среднее зелье лечения")
             {
                 foreach (Персонаж Текущий_Персонаж in Персонажи)
                 {
@@ -85,7 +94,7 @@ namespace Ролевая_игра__WPF_
                 ПереченьПредметов.RemoveAt(SearchForItem((string)Список_Предметов.SelectedItem));
                 ReloadInventoryList();
             }
-            else if ((string)Список_Предметов.SelectedItem == "Большое зелье лечения [+75 ОЗ]")
+            else if ((string)Список_Предметов.SelectedItem == "[+75 ОЗ] Большое зелье лечения")
             {
                 foreach (Персонаж Текущий_Персонаж in Персонажи)
                 {
@@ -97,7 +106,7 @@ namespace Ролевая_игра__WPF_
                 ПереченьПредметов.RemoveAt(SearchForItem((string)Список_Предметов.SelectedItem));
                 ReloadInventoryList();
             }
-            else if ((string)Список_Предметов.SelectedItem == "Бутылек Маны [+25 ОМ]")
+            else if ((string)Список_Предметов.SelectedItem == "[+25 ОМ] Бутылек Маны")
             {
                 foreach (Персонаж Текущий_Персонаж in Персонажи)
                 {
@@ -109,7 +118,7 @@ namespace Ролевая_игра__WPF_
                 ПереченьПредметов.RemoveAt(SearchForItem((string)Список_Предметов.SelectedItem));
                 ReloadInventoryList();
             }
-            else if ((string)Список_Предметов.SelectedItem == "Фласка маны [+50 ОМ]")
+            else if ((string)Список_Предметов.SelectedItem == "[+50 ОМ] Фласка маны")
             {
                 foreach (Персонаж Текущий_Персонаж in Персонажи)
                 {
@@ -121,7 +130,7 @@ namespace Ролевая_игра__WPF_
                 ПереченьПредметов.RemoveAt(SearchForItem((string)Список_Предметов.SelectedItem));
                 ReloadInventoryList();
             }
-            else if ((string)Список_Предметов.SelectedItem == "Банка маны [+75 ОМ]")
+            else if ((string)Список_Предметов.SelectedItem == "[+75 ОМ] Банка маны")
             {
                 foreach (Персонаж Текущий_Персонаж in Персонажи)
                 {
@@ -139,25 +148,28 @@ namespace Ролевая_игра__WPF_
         {
             Список_Предметов.Items.Clear();
 
-            foreach (Предметы.Зелье Предмет in ПереченьПредметов)
+            foreach (Предметы.Зелье Предмет in ПереченьПредметов.OrderBy(it => it.Название))
             {
                 Список_Предметов.Items.Add((Предмет as Предметы.Зелье).Название);
                 НазванияПредметов.Add(Предмет.Название);
             }
-
-            ПереченьПредметов.Select(x => x.Название).OrderBy(x => x);
         }
 
         int SearchForItem(string Название_искомого_объекта)
         {
-            for (int i = 0; i < НазванияПредметов.Count; i++) 
+            for (int i = 0; i < НазванияПредметов.Count; i++)
             {
                 if (НазванияПредметов[i] == Название_искомого_объекта)
+                {
                     return i;
+                }
             }
             return -1;
         }
 
-        public List<Предметы.Зелье> GetInventory() => ПереченьПредметов;
+        public List<Предметы.Зелье> GetInventory()
+        {
+            return ПереченьПредметов;
+        }
     }
 }
