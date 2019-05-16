@@ -17,9 +17,12 @@ namespace Ролевая_игра__WPF_
         private Inventory InventoryWindow;
         private List<Персонаж> Персонажи = new List<Персонаж>();
         private List<bool> Обладает_магией = new List<bool>();
-        List<Предметы.Зелье> ПереченьПредметов = new List<Предметы.Зелье>();
+        private List<Предметы.Зелье> ПереченьПредметов = new List<Предметы.Зелье>();
         private string ConsoleBuffer;
         private int ТекущийПерсонаж;
+        private uint NextAdventureIs = 0;
+        private AdventureScripts adventureScripts;
+        private bool[] AdventureScriptsNonRepeat = new bool[12];
 
         public MainWindow()
         {
@@ -28,15 +31,13 @@ namespace Ролевая_игра__WPF_
             ТекущийПерсонаж = 0;
 
             ПереченьПредметов.Add(new Предметы.Малое_Зелье_Лечения());
-            ПереченьПредметов.Add(new Предметы.Среднее_Зелье_Лечения());
-            ПереченьПредметов.Add(new Предметы.Большое_Зелье_Лечения());
+            ПереченьПредметов.Add(new Предметы.Малое_Зелье_Лечения());
+            ПереченьПредметов.Add(new Предметы.Малое_Зелье_Лечения());
             ПереченьПредметов.Add(new Предметы.Бутылек_Маны());
-            ПереченьПредметов.Add(new Предметы.Фласка_маны());
-            ПереченьПредметов.Add(new Предметы.Банка_маны());
-            ПереченьПредметов.Add(new Предметы.Большое_Зелье_Лечения());
-            ПереченьПредметов.Add(new Предметы.Большое_Зелье_Лечения());
-            ПереченьПредметов.Add(new Предметы.Большое_Зелье_Лечения());
+            ПереченьПредметов.Add(new Предметы.Бутылек_Маны());
+            ПереченьПредметов.Add(new Предметы.Бутылек_Маны());
 
+            adventureScripts = new AdventureScripts(NextAdventureIs);
         }
 
         private void MainWindow_Button_AddHero_Click(object sender, RoutedEventArgs e)
@@ -303,7 +304,8 @@ namespace Ролевая_игра__WPF_
             Button_Inventory.IsEnabled = true;
             MainWindow_Button_SwitchHero.IsEnabled = true;
         }
-        void DoLoadFile()
+
+        private void DoLoadFile()
         {
             if (File.Exists("SaveFile.svfl"))
             {
@@ -421,6 +423,18 @@ namespace Ролевая_игра__WPF_
             InventoryWindow = new Inventory(Персонажи, ПереченьПредметов);
             InventoryWindow.ShowDialog();
             ПереченьПредметов = InventoryWindow.GetInventory();
+        }
+
+        private void MainWindow_Button_GoForAdventure_Click(object sender, RoutedEventArgs e)
+        {
+            Menu_Grid.Visibility = Visibility.Hidden;
+            Adventure_Grid.Visibility = Visibility.Visible;
+            GoForAdventure();
+        }
+
+        private void GoForAdventure()
+        {
+
         }
     }
 }

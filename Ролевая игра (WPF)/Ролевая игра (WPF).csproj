@@ -59,6 +59,7 @@
     <Compile Include="AddHero.xaml.cs">
       <DependentUpon>AddHero.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AdventureScripts.cs" />
     <Compile Include="Inventory.xaml.cs">
       <DependentUpon>Inventory.xaml</DependentUpon>
     </Compile>

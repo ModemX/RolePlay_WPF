@@ -6,26 +6,34 @@
             <ColumnDefinition Width="10*" />
             <ColumnDefinition Width="140*" />
         </Grid.ColumnDefinitions>
-        <Button x:Name="MainWindow_Button_AddHero" Content="Добавить персонажа" HorizontalAlignment="Left" Margin="7.8,1,0,0" VerticalAlignment="Top" Width="125" Height="38" Grid.Column="3" IsDefault="True" Click="MainWindow_Button_AddHero_Click" />
-        <Rectangle Fill="#FFEBEBEB" HorizontalAlignment="Left" Height="380" Stroke="#FF000000" VerticalAlignment="Top" Width="613" Margin="0,1,0,0" Grid.ColumnSpan="3" Grid.RowSpan="3" />
-        <TextBlock x:Name="Console" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="360" Width="592" Grid.RowSpan="2" />
-        <Button x:Name="MainWindow_Button_ShowHeroes" Content="Показать персонажей" HorizontalAlignment="Left" Margin="8,44,0,0" VerticalAlignment="Top" Width="125" Height="38" Grid.Column="3" IsEnabled="False" />
-        <Button x:Name="MainWindow_Button_ShowInfo" Content="Состояние текущего &#xA;героя" HorizontalAlignment="Left" Margin="8,87,0,0" VerticalAlignment="Top" Width="125" Height="38" Grid.Column="3" IsEnabled="False" AutomationProperties.IsColumnHeader="True" Click="MainWindow_Button_ShowInfo_Click" />
-        <Button x:Name="MainWindow_Button_SwitchHero" Content="Сменить героя" HorizontalAlignment="Left" Margin="8,342,0,0" VerticalAlignment="Top" Width="125" Height="38" Grid.Column="3" IsEnabled="False" AutomationProperties.IsColumnHeader="True" Grid.RowSpan="2" Click="MainWindow_Button_SwitchHero_Click" />
-        <Button x:Name="Button_Save" Content="" Grid.Column="3" HorizontalAlignment="Left" Margin="13,302,0,0" VerticalAlignment="Top" Width="35" Height="35" Click="Button_Save_Click" Foreground="{x:Null}" BorderBrush="Black" IsEnabled="False">
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Save.png" Stretch="UniformToFill" TileMode="Tile"/>
-            </Button.Background>
-        </Button>
-        <Button x:Name="Button_Inventory" Content="" Grid.Column="3" HorizontalAlignment="Left" Margin="53,302,0,0" VerticalAlignment="Top" Width="35" Height="35" IsEnabled="False" Click="Button_Inventory_Click">
+        <Rectangle Fill="#FFEBEBEB" HorizontalAlignment="Left" Height="380" Stroke="#FF000000" VerticalAlignment="Top" Width="613" Margin="0,1,0,0" Grid.ColumnSpan="3" Grid.RowSpan="3" d:IsLocked="True" />
+        <TextBlock x:Name="Console" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="360" Width="592" Grid.RowSpan="2" d:IsLocked="True" />
+        <Button x:Name="Button_Inventory" Content="" Grid.Column="3" HorizontalAlignment="Left" Margin="53,302,0,0" VerticalAlignment="Top" Width="35" Height="35" IsEnabled="False" Click="Button_Inventory_Click" d:IsLocked="True">
             <Button.Background>
                 <ImageBrush Stretch="UniformToFill" ImageSource="Resources/Inventary.png"/>
             </Button.Background>
         </Button>
-        <Button x:Name="Button_Load" Content="" Grid.Column="3" HorizontalAlignment="Left" Margin="93,302,0,0" VerticalAlignment="Top" Width="35" Height="35" Click="Button_Load_Click" ForceCursor="True">
-            <Button.Background>
-                <ImageBrush ImageSource="Resources/Load.png" Stretch="UniformToFill"/>
-            </Button.Background>
-        </Button>
+        <Grid x:Name="Menu_Grid" Grid.Column="3" Margin="8,1,6.2,10">
+            <Button x:Name="MainWindow_Button_AddHero" Content="Добавить персонажа" HorizontalAlignment="Left" VerticalAlignment="Top" Width="125" Height="38" IsDefault="True" Click="MainWindow_Button_AddHero_Click" />
+            <Button x:Name="MainWindow_Button_ShowInfo" Content="Состояние текущего &#xA;героя" HorizontalAlignment="Left" Margin="0,43,0,0" VerticalAlignment="Top" Width="125" Height="38" IsEnabled="False" AutomationProperties.IsColumnHeader="True" Click="MainWindow_Button_ShowInfo_Click" />
+            <Button x:Name="MainWindow_Button_SwitchHero" Content="Сменить героя" HorizontalAlignment="Left" Margin="0,86,0,0" VerticalAlignment="Top" Width="125" Height="38" IsEnabled="False" AutomationProperties.IsColumnHeader="True" Click="MainWindow_Button_SwitchHero_Click" />
+            <Button x:Name="Button_Save" Content="" HorizontalAlignment="Left" Margin="5,301,0,0" VerticalAlignment="Top" Width="35" Height="35" Click="Button_Save_Click" Foreground="{x:Null}" BorderBrush="Black" IsEnabled="False">
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Save.png" Stretch="UniformToFill" TileMode="Tile"/>
+                </Button.Background>
+            </Button>
+            <Button x:Name="Button_Load" Content="" HorizontalAlignment="Left" Margin="85,301,0,0" VerticalAlignment="Top" Width="35" Height="35" Click="Button_Load_Click" ForceCursor="True">
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/Load.png" Stretch="UniformToFill"/>
+                </Button.Background>
+            </Button>
+            <Button x:Name="MainWindow_Button_GoForAdventure" Content="Отправиться на &#xA;приключения" HorizontalAlignment="Left" Margin="0,341,0,0" VerticalAlignment="Top" Width="125" Height="38" IsEnabled="False" Click="MainWindow_Button_GoForAdventure_Click" />
+        </Grid>
+        <Grid x:Name="Adventure_Grid" Margin="7.8,1,6.2,10" Grid.Column="3" d:IsHidden="True">
+            <Button x:Name="Button_Choice_1" Content="Button" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="106" Height="70"/>
+            <Button x:Name="Button_Choice_2" Content="Button" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Width="106" Height="70"/>
+            <Button x:Name="Button_Choice_3" Content="Button" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Width="106" Height="70"/>
+            <Button x:Name="Button_GiveUp" Content="Сдаться / Убежать" HorizontalAlignment="Left" Margin="0,341,0,0" VerticalAlignment="Top" Width="125" Height="38" IsEnabled="False" Click="MainWindow_Button_ShowHeroes_Click" />
+        </Grid>
     </Grid>
 </Window>
