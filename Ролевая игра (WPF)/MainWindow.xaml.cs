@@ -38,6 +38,10 @@ namespace Ролевая_игра__WPF_
             ПереченьПредметов.Add(new Предметы.Бутылек_Маны());
 
             adventureScripts = new AdventureScripts(NextAdventureIs);
+
+            Menu_Grid.Visibility = Visibility.Visible;
+            Adventure_Grid.Visibility = Visibility.Hidden;
+
         }
 
         private void MainWindow_Button_AddHero_Click(object sender, RoutedEventArgs e)
@@ -84,11 +88,13 @@ namespace Ролевая_игра__WPF_
                 MainWindow_Button_ShowInfo.IsEnabled = true;
                 Button_Save.IsEnabled = true;
                 Button_Inventory.IsEnabled = true;
+                MainWindow_Button_GoForAdventure.IsEnabled = true;
                 ТекущийПерсонаж = Персонажи.Count - 1;
             }
             if (Персонажи.Count >= 2)
             {
                 MainWindow_Button_SwitchHero.IsEnabled = true;
+
             }
         }
 
@@ -102,6 +108,8 @@ namespace Ролевая_игра__WPF_
                 Button_Save.IsEnabled = true;
                 Console.Text = ConsoleBuffer;
                 MainWindow_Button_SwitchHero.IsEnabled = true;
+                MainWindow_Button_GoForAdventure.IsEnabled = true;
+
             }
             else
             {
@@ -111,6 +119,8 @@ namespace Ролевая_игра__WPF_
                 Button_Load.IsEnabled = false;
                 Button_Save.IsEnabled = false;
                 MainWindow_Button_SwitchHero.IsEnabled = false;
+                MainWindow_Button_GoForAdventure.IsEnabled = false;
+
 
                 ConsoleBuffer = Console.Text;
                 if (Обладает_магией[ТекущийПерсонаж] == false)
@@ -303,6 +313,7 @@ namespace Ролевая_игра__WPF_
             }
             Button_Inventory.IsEnabled = true;
             MainWindow_Button_SwitchHero.IsEnabled = true;
+            MainWindow_Button_GoForAdventure.IsEnabled = true;
         }
 
         private void DoLoadFile()
@@ -434,7 +445,71 @@ namespace Ролевая_игра__WPF_
 
         private void GoForAdventure()
         {
+            Change_Button_Choice_1("Тест");
+        }
+        public string Get_Button_Choice_1()
+        {
+            return (string)Button_Choice_1.Content;
+        }
+        public void Change_Button_Choice_1(string Text)
+        {
+            Button_Choice_1.Content = Text;
+        }
+        public string Get_Button_Choice_2()
+        {
+            return (string)Button_Choice_2.Content;
+        }
+        public void Change_Button_Choice_2(string Text)
+        {
+            Button_Choice_2.Content = Text;
+        }
+        public string Get_Button_Choice_3()
+        {
+            return (string)Button_Choice_3.Content;
+        }
+        public void Change_Button_Choice_3(string Text)
+        {
+            Button_Choice_3.Content = Text;
+        }
 
+        private void Button_Choice_1_Click(object sender, RoutedEventArgs e)
+        {
+            adventureScripts.Choices_AddLast_GetLast = 1;
+            adventureScripts.Начало_приключения(); //А то ли что нужно?
+        }
+
+        private void Button_Choice_2_Click(object sender, RoutedEventArgs e)
+        {
+            adventureScripts.Choices_AddLast_GetLast = 2;
+        }
+
+        private void Button_Choice_3_Click(object sender, RoutedEventArgs e)
+        {
+            adventureScripts.Choices_AddLast_GetLast = 3;
+        }
+
+        public void Block_Button_Choice_2()
+        {
+            Button_Choice_2.Visibility = Visibility.Hidden;
+        }
+        public void UnBlock_Button_Choice_2()
+        {
+            Button_Choice_2.Visibility = Visibility.Visible;
+        }
+        public void Block_Button_Choice_3()
+        {
+            Button_Choice_3.Visibility = Visibility.Hidden;
+        }
+        public void UnBlock_Button_Choice_3()
+        {
+            Button_Choice_3.Visibility = Visibility.Visible;
+        }
+
+        public void ConsoleWriteLine(string Text)
+        {
+            Console.Text += '\n';
+            Console.Text += '\n';
+            Console.Text += Text;
         }
     }
 }

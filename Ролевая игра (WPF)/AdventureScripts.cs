@@ -8,11 +8,20 @@ namespace Ролевая_игра__WPF_
 {
     public class AdventureScripts
     {
-        public AdventureScripts(uint CaseOfAdventure)
+        private int[] Choices = new int[999];
+        MainWindow MainWindow;
+        public AdventureScripts(uint CaseOfAdventure, MainWindow MainForm)
         {
+            MainWindow = MainForm;
             switch (CaseOfAdventure)
             {
-                case 0: { } break;
+                case 0:
+                    {
+                        if (Choices[0] == 0)
+                            Начало_приключения();
+                        else
+                            goto case 1;
+                    } break;
                 case 1: { } break;
                 case 2: { } break;
                 case 3: { } break;
@@ -27,6 +36,37 @@ namespace Ролевая_игра__WPF_
                 default:
                     break;
             }
+        }
+
+        public int Choices_AddLast_GetLast
+        {
+            get
+            {
+                for (int i = Choices.Length; i >= 0; i--)
+                {
+                    if (Choices[i] != 0)
+                    {
+                        return Choices[i];
+                    }
+                }
+
+                return -1;
+            }
+            set
+            {
+                for (int i = Choices.Length; i >= 0; i--)
+                {
+                    if (Choices[i] != 0)
+                    {
+                        Choices[i + 1] = value;
+                    }
+                }
+            }
+        }
+
+        public void Начало_приключения()
+        {
+            MainWindow.ConsoleWriteLine("Проверка");
         }
     }
 }
