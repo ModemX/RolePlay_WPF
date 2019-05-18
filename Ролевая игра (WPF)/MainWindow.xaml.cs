@@ -491,6 +491,7 @@ namespace Ролевая_игра__WPF_
             Console.Text += '\n';
             Console.Text += '\n';
             Console.Text += Text;
+            ScrollViewer.ScrollToEnd();
         }
     }
 }
