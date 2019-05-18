@@ -15,14 +15,20 @@ namespace Ролевая_игра__WPF_
     {
         private AddHero AddHeroWindow;
         private Inventory InventoryWindow;
-        private List<Персонаж> Персонажи = new List<Персонаж>();
-        private List<bool> Обладает_магией = new List<bool>();
+        public List<Персонаж> Персонажи = new List<Персонаж>();
+        public List<bool> Обладает_магией = new List<bool>();
         private List<Предметы.Зелье> ПереченьПредметов = new List<Предметы.Зелье>();
         private string ConsoleBuffer;
         private int ТекущийПерсонаж;
-        private uint NextAdventureIs = 0;
+        public int NextAdventureIs = 0;
         private AdventureScripts adventureScripts;
         private bool[] AdventureScriptsNonRepeat = new bool[12];
+        /// <summary>
+        /// Здоровье: [x1] [x2] [x3]
+        /// Эффективность использования заклинаний: [x1.2] [x1] [x0.75]   
+        /// Урон: [x1] [x1,5] [x2]
+        /// </summary>
+        public double[] МножительСилыРун = new double[3] { 1, 1.2, 1 };
 
         public MainWindow()
         {
@@ -36,8 +42,6 @@ namespace Ролевая_игра__WPF_
             ПереченьПредметов.Add(new Предметы.Бутылек_Маны());
             ПереченьПредметов.Add(new Предметы.Бутылек_Маны());
             ПереченьПредметов.Add(new Предметы.Бутылек_Маны());
-
-            adventureScripts = new AdventureScripts(NextAdventureIs);
 
             Menu_Grid.Visibility = Visibility.Visible;
             Adventure_Grid.Visibility = Visibility.Hidden;
@@ -91,10 +95,15 @@ namespace Ролевая_игра__WPF_
                 MainWindow_Button_GoForAdventure.IsEnabled = true;
                 ТекущийПерсонаж = Персонажи.Count - 1;
             }
-            if (Персонажи.Count >= 2)
+            if (Персонажи.Count == 1)
             {
                 MainWindow_Button_SwitchHero.IsEnabled = true;
 
+            }
+            if (Персонажи.Count == 2)
+            {
+                MainWindow_Button_SwitchHero.IsEnabled = true;
+                MainWindow_Button_AddHero.IsEnabled = false;
             }
         }
 
@@ -390,33 +399,34 @@ namespace Ролевая_игра__WPF_
                 }
 
                 //загрузка предметов
-                foreach (DataRow строка in ds.Tables["Инвентарь"].Rows)
-                {
-                    if (строка[0] as string == "[+25 ОЗ] Малое зелье лечения")
+                if(ds.Tables["Инвентарь"] != null)
+                    foreach (DataRow строка in ds.Tables["Инвентарь"].Rows)
                     {
-                        ПереченьПредметов.Add(new Предметы.Малое_Зелье_Лечения());
+                        if (строка[0] as string == "[+25 ОЗ] Малое зелье лечения")
+                        {
+                            ПереченьПредметов.Add(new Предметы.Малое_Зелье_Лечения());
+                        }
+                        else if (строка[0] as string == "[+50 ОЗ] Среднее зелье лечения")
+                        {
+                            ПереченьПредметов.Add(new Предметы.Среднее_Зелье_Лечения());
+                        }
+                        else if (строка[0] as string == "[+75 ОЗ] Большое зелье лечения")
+                        {
+                            ПереченьПредметов.Add(new Предметы.Большое_Зелье_Лечения());
+                        }
+                        else if (строка[0] as string == "[+25 ОМ] Бутылек Маны")
+                        {
+                            ПереченьПредметов.Add(new Предметы.Бутылек_Маны());
+                        }
+                        else if (строка[0] as string == "[+50 ОМ] Фласка маны")
+                        {
+                            ПереченьПредметов.Add(new Предметы.Фласка_маны());
+                        }
+                        else if (строка[0] as string == "[+75 ОМ] Банка маны")
+                        {
+                            ПереченьПредметов.Add(new Предметы.Банка_маны());
+                        }
                     }
-                    else if (строка[0] as string == "[+50 ОЗ] Среднее зелье лечения")
-                    {
-                        ПереченьПредметов.Add(new Предметы.Среднее_Зелье_Лечения());
-                    }
-                    else if (строка[0] as string == "[+75 ОЗ] Большое зелье лечения")
-                    {
-                        ПереченьПредметов.Add(new Предметы.Большое_Зелье_Лечения());
-                    }
-                    else if (строка[0] as string == "[+25 ОМ] Бутылек Маны")
-                    {
-                        ПереченьПредметов.Add(new Предметы.Бутылек_Маны());
-                    }
-                    else if (строка[0] as string == "[+50 ОМ] Фласка маны")
-                    {
-                        ПереченьПредметов.Add(new Предметы.Фласка_маны());
-                    }
-                    else if (строка[0] as string == "[+75 ОМ] Банка маны")
-                    {
-                        ПереченьПредметов.Add(new Предметы.Банка_маны());
-                    }
-                }
 
                 InventoryWindow = new Inventory(Персонажи, ПереченьПредметов);
 
@@ -440,70 +450,41 @@ namespace Ролевая_игра__WPF_
         {
             Menu_Grid.Visibility = Visibility.Hidden;
             Adventure_Grid.Visibility = Visibility.Visible;
-            GoForAdventure();
+
+            adventureScripts = new AdventureScripts(NextAdventureIs, this);
         }
 
-        private void GoForAdventure()
-        {
-            Change_Button_Choice_1("Тест");
-        }
-        public string Get_Button_Choice_1()
-        {
-            return (string)Button_Choice_1.Content;
-        }
-        public void Change_Button_Choice_1(string Text)
-        {
-            Button_Choice_1.Content = Text;
-        }
-        public string Get_Button_Choice_2()
-        {
-            return (string)Button_Choice_2.Content;
-        }
-        public void Change_Button_Choice_2(string Text)
-        {
-            Button_Choice_2.Content = Text;
-        }
-        public string Get_Button_Choice_3()
-        {
-            return (string)Button_Choice_3.Content;
-        }
-        public void Change_Button_Choice_3(string Text)
-        {
-            Button_Choice_3.Content = Text;
-        }
+        public string Get_Button_Choice_1() => (string)Button_Choice_1.Content;
+        public void Change_Button_Choice_1(string Text) => Button_Choice_1.Content = Text;
+        public string Get_Button_Choice_2() => (string)Button_Choice_2.Content;
+        public void Change_Button_Choice_2(string Text) => Button_Choice_2.Content = Text;
+        public string Get_Button_Choice_3() => (string)Button_Choice_3.Content;
+        public void Change_Button_Choice_3(string Text) => Button_Choice_3.Content = Text;
 
         private void Button_Choice_1_Click(object sender, RoutedEventArgs e)
         {
-            adventureScripts.Choices_AddLast_GetLast = 1;
-            adventureScripts.Начало_приключения(); //А то ли что нужно?
+            adventureScripts.Choices_Add(1);
+            adventureScripts.Воспроизведение_Шагов();
         }
 
         private void Button_Choice_2_Click(object sender, RoutedEventArgs e)
         {
-            adventureScripts.Choices_AddLast_GetLast = 2;
+            adventureScripts.Choices_Add(2);
+            adventureScripts.Воспроизведение_Шагов();
         }
 
         private void Button_Choice_3_Click(object sender, RoutedEventArgs e)
         {
-            adventureScripts.Choices_AddLast_GetLast = 3;
+            adventureScripts.Choices_Add(3);
+            adventureScripts.Воспроизведение_Шагов();
         }
 
-        public void Block_Button_Choice_2()
-        {
-            Button_Choice_2.Visibility = Visibility.Hidden;
-        }
-        public void UnBlock_Button_Choice_2()
-        {
-            Button_Choice_2.Visibility = Visibility.Visible;
-        }
-        public void Block_Button_Choice_3()
-        {
-            Button_Choice_3.Visibility = Visibility.Hidden;
-        }
-        public void UnBlock_Button_Choice_3()
-        {
-            Button_Choice_3.Visibility = Visibility.Visible;
-        }
+        public void Block_Button_Choice_1() => Button_Choice_1.Visibility = Visibility.Hidden;
+        public void UnBlock_Button_Choice_1() => Button_Choice_1.Visibility = Visibility.Visible;
+        public void Block_Button_Choice_2() => Button_Choice_2.Visibility = Visibility.Hidden;
+        public void UnBlock_Button_Choice_2() => Button_Choice_2.Visibility = Visibility.Visible;
+        public void Block_Button_Choice_3() => Button_Choice_3.Visibility = Visibility.Hidden;
+        public void UnBlock_Button_Choice_3() => Button_Choice_3.Visibility = Visibility.Visible;
 
         public void ConsoleWriteLine(string Text)
         {

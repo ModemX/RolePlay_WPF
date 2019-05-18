@@ -3,70 +3,231 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+
 
 namespace Ролевая_игра__WPF_
 {
     public class AdventureScripts
     {
-        private int[] Choices = new int[999];
-        MainWindow MainWindow;
-        public AdventureScripts(uint CaseOfAdventure, MainWindow MainForm)
+        private List<int> Choices = new List<int>();
+        private MainWindow MainWindow;
+        public AdventureScripts(int CaseOfAdventure, MainWindow MainForm)
         {
             MainWindow = MainForm;
-            switch (CaseOfAdventure)
+
+            if (Choices.Count == 0)
             {
-                case 0:
+                Начало_приключения();
+            }
+            else
+            {
+                Воспроизведение_Шагов();
+            }
+        }
+
+        public void Choices_Add(int value)
+        {
+            Choices.Add(value);
+        }
+
+        public int Choices_GetLast => Choices.Last();
+
+
+        private void Начало_приключения()
+        {
+            if (MainWindow.Персонажи.Count == 0 && MainWindow.Персонажи[0].Пол == true)
+            {
+                MainWindow.ConsoleWriteLine($"Герой-одиночка был призван в этот мир могущественными волшебниками королества Мелромарк, " +
+                    $"дабы спасти всех в кололевстве от предсказанного уничтожения нашествиями волн мостров из другого измерения. " +
+                    $"Вы были призваны в темной комнате отдающей сыростью, в окружении магов, внемлющих вашим первым словам. Что стоит им сказать?");
+            }
+            else if (MainWindow.Персонажи.Count == 0 && MainWindow.Персонажи[0].Пол == false)
+            {
+                MainWindow.ConsoleWriteLine($"Героиня-одиночка была призвана в этот мир могущественными волшебниками королества Мелромарк, " +
+                    $"дабы спасти всех в кололевстве от предсказанного уничтожения нашествиями волн мостров из другого измерения. " +
+                    $"Вы были призваны в темной комнате отдающей сыростью, в окружении магов, внемлющих вашим первым словам. Что стоит им сказать?");
+            }
+            else if (MainWindow.Персонажи.Count == 1)
+            {
+                MainWindow.ConsoleWriteLine($"Двое героев были призваны в этот мир могущественными волшебниками королества Мелромарк, " +
+                    $"дабы спасти всех в кололевстве от предсказанного уничтожения нашествиями волн мостров из другого измерения. " +
+                    $"Все вы были призваны в темной комнате отдающей сыростью, в окружении магов, внемлющих вашим первым словам. Что должны сказать герои?");
+            }
+            else
+            {
+                MainWindow.ConsoleWriteLine($"Трое героев были призваны в этот мир могущественными волшебниками королества Мелромарк, " +
+                    $"дабы спасти всех в кололевстве от предсказанного уничтожения нашествиями волн мостров из другого измерения. " +
+                    $"Все вы были призваны в темной комнате отдающей сыростью, в окружении магов, внемлющих вашим первым словам. Что должны сказать герои?");
+            }
+
+            MainWindow.Change_Button_Choice_1("Привет!");
+            MainWindow.Change_Button_Choice_2("Как дела?");
+            MainWindow.Change_Button_Choice_3("Кто вы?");
+
+        }
+
+        public void Воспроизведение_Шагов()
+        {
+            int i = 1;
+            switch (Choices[i - 1])
+            {
+                case 1:
                     {
-                        if (Choices[0] == 0)
-                            Начало_приключения();
+                        if (Choices.Count == i)
+                        {
+                            MainWindow.ConsoleWriteLine($"- Привет!");
+
+                            if (MainWindow.Персонажи.Count == 0 && MainWindow.Персонажи[0].Пол == true)
+                            {
+                                MainWindow.ConsoleWriteLine($"- Герой, наше королество в опасности, на землях Мелромарка лежит тяжелая ноша, сражение с волнами монстров. " +
+                                    $"Мы пытались отбить волны своими силами, но треть населения нашего королевства были жестоко убиты. Пожалуйста, герой, спаси нас!");
+                                MainWindow.Change_Button_Choice_1("Как я \nдолжен это \nсделать?");
+                            }
+                            else if (MainWindow.Персонажи.Count == 0 && MainWindow.Персонажи[0].Пол == false)
+                            {
+                                MainWindow.ConsoleWriteLine($"- Героиня, наше королество в опасности, на землях Мелромарка лежит тяжелая ноша, сражение с волнами монстров. " +
+                                    $"Мы пытались отбить волны своими силами, но треть населения нашего королевства были жестоко убиты. Пожалуйста, героиня, спаси нас!");
+                                MainWindow.Change_Button_Choice_1("Как я \nдолжна это \nсделать?");
+                            }
+                            else if (MainWindow.Персонажи.Count >= 1)
+                            {
+                                MainWindow.ConsoleWriteLine($"- Герои, наше королество в опасности, на землях Мелромарка лежит тяжелая ноша, сражение с волнами монстров. " +
+                                    $"Мы пытались отбить волны своими силами, но треть населения нашего королевства были жестоко убиты. Пожалуйста, герои, спасите нас!");
+                                MainWindow.Change_Button_Choice_1("Как мы \nдолжны это \nсделать?");
+                            }
+
+                            MainWindow.Block_Button_Choice_2();
+                            MainWindow.Block_Button_Choice_3();
+                        }
                         else
-                            goto case 1;
-                    } break;
-                case 1: { } break;
-                case 2: { } break;
-                case 3: { } break;
-                case 4: { } break;
-                case 5: { } break;
-                case 6: { } break;
-                case 7: { } break;
-                case 8: { } break;
-                case 9: { } break;
-                case 10: { } break;
-                case 11: { } break;
-                default:
+                        {
+                            i++;
+
+                            switch (Choices[i - 1])
+                            {
+                                case 1:
+                                    {
+                                        Первичная_выдача_предметов(i);
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                    break;
+                case 2:
+                    {
+                        if (Choices.Count == i)
+                        {
+                            MainWindow.ConsoleWriteLine($"- Как дела?");
+
+                            if (MainWindow.Персонажи.Count == 0 && MainWindow.Персонажи[0].Пол == true)
+                            {
+                                MainWindow.ConsoleWriteLine($"- Герой, наше королество в опасности, на землях Мелромарка лежит тяжелая ноша, сражение с волнами монстров. " +
+                                    $"Мы пытались отбить волны своими силами, но треть населения нашего королевства были жестоко убиты. Пожалуйста, герой, спаси нас!");
+                                MainWindow.Change_Button_Choice_1("Как я \nдолжен это \nсделать?");
+                            }
+                            else if (MainWindow.Персонажи.Count == 0 && MainWindow.Персонажи[0].Пол == false)
+                            {
+                                MainWindow.ConsoleWriteLine($"- Героиня, наше королество в опасности, на землях Мелромарка лежит тяжелая ноша, сражение с волнами монстров. " +
+                                    $"Мы пытались отбить волны своими силами, но треть населения нашего королевства были жестоко убиты. Пожалуйста, героиня, спаси нас!");
+                                MainWindow.Change_Button_Choice_1("Как я \nдолжна это \nсделать?");
+                            }
+                            else if (MainWindow.Персонажи.Count >= 1)
+                            {
+                                MainWindow.ConsoleWriteLine($"- Герои, наше королество в опасности, на землях Мелромарка лежит тяжелая ноша, сражение с волнами монстров. " +
+                                    $"Мы пытались отбить волны своими силами, но треть населения нашего королевства были жестоко убиты. Пожалуйста, герои, спасите нас!");
+                                MainWindow.Change_Button_Choice_1("Как мы \nдолжны это \nсделать?");
+                            }
+
+                            MainWindow.Block_Button_Choice_2();
+                            MainWindow.Block_Button_Choice_3();
+                        }
+                        else
+                        {
+                            i++;
+
+                            switch (Choices[i - 1])
+                            {
+                                case 1:
+                                    {
+                                        Первичная_выдача_предметов(i);
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                    break;
+                case 3:
+                    {
+                        if (Choices.Count == i)
+                        {
+                            MainWindow.ConsoleWriteLine($"- Кто вы?");
+
+                            if (MainWindow.Персонажи.Count == 0 && MainWindow.Персонажи[0].Пол == true)
+                            {
+                                MainWindow.ConsoleWriteLine($"- Мы - маги королевства Мелромарк и оно в опасности. На землях Мелромарка лежит тяжелая ноша, сражение с волнами монстров. " +
+                                    $"Мы пытались отбить волны своими силами, но треть населения нашего королевства были жестоко убиты. Пожалуйста, герой, спаси нас!");
+                                MainWindow.Change_Button_Choice_1("Как я \nдолжен это \nсделать?");
+                            }
+                            else if (MainWindow.Персонажи.Count == 0 && MainWindow.Персонажи[0].Пол == false)
+                            {
+                                MainWindow.ConsoleWriteLine($"- Мы - маги королевства Мелромарк и оно в опасности. На землях Мелромарка лежит тяжелая ноша, сражение с волнами монстров. " +
+                                    $"Мы пытались отбить волны своими силами, но треть населения нашего королевства были жестоко убиты. Пожалуйста, героиня, спаси нас!");
+                                MainWindow.Change_Button_Choice_1("Как я \nдолжна это \nсделать?");
+                            }
+                            else if (MainWindow.Персонажи.Count >= 1)
+                            {
+                                MainWindow.ConsoleWriteLine($"- Мы - маги королевства Мелромарк и оно в опасности. На землях Мелромарка лежит тяжелая ноша, сражение с волнами монстров. " +
+                                    $"Мы пытались отбить волны своими силами, но треть населения нашего королевства были жестоко убиты. Пожалуйста, герои, спасите нас!");
+                                MainWindow.Change_Button_Choice_1("Как мы \nдолжны это \nсделать?");
+                            }
+
+                            MainWindow.Block_Button_Choice_2();
+                            MainWindow.Block_Button_Choice_3();
+
+                        }
+                        else
+                        {
+                            i++;
+
+                            switch (Choices[i - 1])
+                            {
+                                case 1:
+                                    {
+                                        Первичная_выдача_предметов(i);
+                                    }
+                                    break;
+                            }
+                        }
+                    }
                     break;
             }
         }
 
-        public int Choices_AddLast_GetLast
+        private void Первичная_выдача_предметов(int I)
         {
-            get
+            int i = I;
+            if(Choices.Count == i)
             {
-                for (int i = Choices.Length; i >= 0; i--)
-                {
-                    if (Choices[i] != 0)
-                    {
-                        return Choices[i];
-                    }
-                }
+                MainWindow.ConsoleWriteLine($"- Единственное что мы можем вам дать это несколько рун, " +
+                    $"усиливающие ваши способности и немного целебных и магических снадобий. Используйте их с умом!");
 
-                return -1;
+                MainWindow.ConsoleWriteLine("СОПИ: Предметы получены: Руна Здоровья (Ур. 1 из 3). " +
+                    "Описание: Увеличивает количесво здоровья у персонажей. Обладает множителем \"x1\"");
+                MainWindow.ConsoleWriteLine("СОПИ: Предметы получены: Руна Эффективности использования заклинаний (Ур. 1 из 3). " +
+                    "Описание: Уменьшает количесво затрат маны на использование заклинаний у персонажей. Обладает множителем \"x1.2\"");
+                MainWindow.ConsoleWriteLine("СОПИ: Предметы получены: Руна Урона (Ур. 1 из 3). " +
+                    "Описание: Увеличивает количесво наносимого урона персонажами. Обладает множителем \"x1\"");
+                MainWindow.ConsoleWriteLine("Тест");
+
+                MainWindow.Change_Button_Choice_1("Спасибо!");
+
             }
-            set
+            else
             {
-                for (int i = Choices.Length; i >= 0; i--)
-                {
-                    if (Choices[i] != 0)
-                    {
-                        Choices[i + 1] = value;
-                    }
-                }
-            }
-        }
 
-        public void Начало_приключения()
-        {
-            MainWindow.ConsoleWriteLine("Проверка");
+            }
         }
     }
 }

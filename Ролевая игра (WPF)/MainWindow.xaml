@@ -6,8 +6,8 @@
             <ColumnDefinition Width="10*" />
             <ColumnDefinition Width="140*" />
         </Grid.ColumnDefinitions>
-        <Rectangle Fill="#FFEBEBEB" HorizontalAlignment="Left" Height="380" Stroke="#FF000000" VerticalAlignment="Top" Width="613" Margin="0,1,0,0" Grid.ColumnSpan="3" Grid.RowSpan="3" d:IsLocked="True" />
-        <TextBlock x:Name="Console" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="360" Width="592" Grid.RowSpan="2" d:IsLocked="True" />
+        <Rectangle Fill="#FFEBEBEB" HorizontalAlignment="Left" Height="380" Stroke="#FF000000" VerticalAlignment="Top" Width="613" Margin="0,1,0,0" Grid.ColumnSpan="3" Grid.RowSpan="3" />
+        <RichTextBox x:Name="Console" Margin="10,9,1.2,21" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" Background="{x:Null}" />
         <Button x:Name="Button_Inventory" Content="" Grid.Column="3" HorizontalAlignment="Left" Margin="53,302,0,0" VerticalAlignment="Top" Width="35" Height="35" IsEnabled="False" Click="Button_Inventory_Click" d:IsLocked="True">
             <Button.Background>
                 <ImageBrush Stretch="UniformToFill" ImageSource="Resources/Inventary.png"/>

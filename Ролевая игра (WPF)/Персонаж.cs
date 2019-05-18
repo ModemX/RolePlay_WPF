@@ -13,9 +13,14 @@ namespace Ролевая_игра__WPF_
         public string Имя { get; protected set; }
         public string Раса { get; protected set; }
         public uint Возраст { get; protected set; }
-        public bool Пол { get; protected set; } //Если true, то мужской, если false, то женский
-
-        public bool[] Состояние = new bool[5] { false, false, false, false, false };// ослаблен, болен, отравлен, парализован, мёртв
+        /// <summary>
+        /// Если true, то мужской, если false, то женский
+        /// </summary>
+        public bool Пол { get; protected set; }
+        /// <summary>
+        /// ослаблен, болен, отравлен, парализован, мёртв
+        /// </summary>
+        public bool[] Состояние = new bool[5] { false, false, false, false, false };
         public bool Может_говорить { get; protected set; } = true;
         public bool Может_двигаться { get; protected set; } = true;
 
