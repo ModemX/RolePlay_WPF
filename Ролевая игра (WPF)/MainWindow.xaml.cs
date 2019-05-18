@@ -29,6 +29,8 @@ namespace Ролевая_игра__WPF_
         /// Урон: [x1] [x1,5] [x2]
         /// </summary>
         public double[] МножительСилыРун = new double[3] { 1, 1.2, 1 };
+        public bool IsBattleMode { get; set; } = false;
+        public List<Враги> СписокТекущихВрагов = new List<Враги>();
 
         public MainWindow()
         {
@@ -463,20 +465,33 @@ namespace Ролевая_игра__WPF_
 
         private void Button_Choice_1_Click(object sender, RoutedEventArgs e)
         {
-            adventureScripts.Choices_Add(1);
-            adventureScripts.Воспроизведение_Шагов();
+            if(!IsBattleMode)
+            {
+                adventureScripts.Choices_Add(1);
+                adventureScripts.Воспроизведение_Шагов();
+            }
+            else
+            {
+
+            }
         }
 
         private void Button_Choice_2_Click(object sender, RoutedEventArgs e)
         {
-            adventureScripts.Choices_Add(2);
-            adventureScripts.Воспроизведение_Шагов();
+            if (!IsBattleMode)
+            {
+                adventureScripts.Choices_Add(2);
+                adventureScripts.Воспроизведение_Шагов();
+            }
         }
 
         private void Button_Choice_3_Click(object sender, RoutedEventArgs e)
         {
-            adventureScripts.Choices_Add(3);
-            adventureScripts.Воспроизведение_Шагов();
+            if (!IsBattleMode)
+            {
+                adventureScripts.Choices_Add(3);
+                adventureScripts.Воспроизведение_Шагов();
+            }
         }
 
         public void Block_Button_Choice_1() => Button_Choice_1.Visibility = Visibility.Hidden;

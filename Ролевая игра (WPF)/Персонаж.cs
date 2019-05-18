@@ -28,6 +28,9 @@ namespace Ролевая_игра__WPF_
         public uint Очки_Здоровья { get; protected set; }
         public uint Очки_Опыта { get; protected set; } = 0;
 
+        public double[] МножительСилыРун;
+
+
         /// <summary>
         /// Создание нового персонажа
         /// </summary>
@@ -215,6 +218,13 @@ namespace Ролевая_игра__WPF_
             }
         }
 
+        public int ПолучитьЗначениеАтаки()
+        {
+            Random random = new Random();
+            return (int)Math.Round(random.Next(15, 25) * МножительСилыРун[2], 0);
+        }
+
+        public void RuneUpdate(double[] НаследованныеМножителиСилыРун) => МножительСилыРун = НаследованныеМножителиСилыРун;
     }
 
     public class Персонаж_с_магией : Персонаж

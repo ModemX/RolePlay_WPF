@@ -60,12 +60,20 @@
       <DependentUpon>AddHero.xaml</DependentUpon>
     </Compile>
     <Compile Include="AdventureScripts.cs" />
+    <Compile Include="Attack.xaml.cs">
+      <DependentUpon>Attack.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Inventory.xaml.cs">
       <DependentUpon>Inventory.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Враги.cs" />
     <Compile Include="Персонаж.cs" />
     <Compile Include="Предметы.cs" />
     <Page Include="AddHero.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Attack.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
