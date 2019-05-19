@@ -20,8 +20,10 @@ namespace Ролевая_игра__WPF_
     public partial class Attack : Window
     {
         List<Враги> СписокТекущихВрагов;
-        int SelectedEnemy;
         Персонаж АтакующийПерсонаж;
+        public int ЗначениеАтаки { get; private set; }
+        public int SelectedEnemy { get; private set; }
+
         public Attack(List <Враги> СписокНаследованныхВрагов, Персонаж НаследованныйАтакующийПерсонаж)
         {
             InitializeComponent();
@@ -34,6 +36,7 @@ namespace Ролевая_игра__WPF_
             SelectedEnemy = 0;
             Button_Attack.IsEnabled = true;
             АтакующийПерсонаж = НаследованныйАтакующийПерсонаж;
+            ЗначениеАтаки = АтакующийПерсонаж.ПолучитьЗначениеАтаки();
         }
 
         private void ComboBox_EnemyList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -44,10 +47,11 @@ namespace Ролевая_игра__WPF_
 
         private void Button_Attack_Click(object sender, RoutedEventArgs e)
         {
-            СписокТекущихВрагов[SelectedEnemy].ОтнятьЗдоровье(АтакующийПерсонаж.ПолучитьЗначениеАтаки());
-            DialogResult = true; 
+            СписокТекущихВрагов[SelectedEnemy].ОтнятьЗдоровье(ЗначениеАтаки);
+            DialogResult = true;
+            Close();
         }
 
-
+        public List<Враги> GetСписокТекущихВрагов() => СписокТекущихВрагов;
     }
 }

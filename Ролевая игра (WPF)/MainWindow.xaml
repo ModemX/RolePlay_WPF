@@ -14,7 +14,7 @@
                 <ImageBrush Stretch="UniformToFill" ImageSource="Resources/Inventary.png"/>
             </Button.Background>
         </Button>
-        <Grid x:Name="Menu_Grid" Grid.Column="2" Margin="8,1,0,0" d:IsLocked="True">
+        <Grid x:Name="Menu_Grid" Grid.Column="2" Margin="8,1,0,0" d:IsLocked="True" d:IsHidden="True">
             <Button x:Name="MainWindow_Button_AddHero" Content="Добавить персонажа" HorizontalAlignment="Left" VerticalAlignment="Top" Width="125" Height="38" IsDefault="True" Click="MainWindow_Button_AddHero_Click" />
             <Button x:Name="MainWindow_Button_ShowInfo" Content="Состояние текущего &#xA;героя" HorizontalAlignment="Left" Margin="0,43,0,0" VerticalAlignment="Top" Width="125" Height="38" IsEnabled="False" AutomationProperties.IsColumnHeader="True" Click="MainWindow_Button_ShowInfo_Click" />
             <Button x:Name="MainWindow_Button_SwitchHero" Content="Сменить героя" HorizontalAlignment="Left" Margin="0,86,0,0" VerticalAlignment="Top" Width="125" Height="38" IsEnabled="False" AutomationProperties.IsColumnHeader="True" Click="MainWindow_Button_SwitchHero_Click" />
@@ -30,11 +30,11 @@
             </Button>
             <Button x:Name="MainWindow_Button_GoForAdventure" Content="Отправиться на &#xA;приключения" HorizontalAlignment="Left" Margin="0,341,0,0" VerticalAlignment="Top" Width="125" Height="38" IsEnabled="False" Click="MainWindow_Button_GoForAdventure_Click" />
         </Grid>
-        <Grid x:Name="Adventure_Grid" Margin="8,1,0,0" Grid.Column="2" d:IsHidden="True">
-            <Button x:Name="Button_Choice_1" Content="Button" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="106" Height="70" Click="Button_Choice_1_Click" d:IsHidden="True"/>
-            <Button x:Name="Button_Choice_2" Content="Button" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Width="106" Height="70" Click="Button_Choice_2_Click" d:IsHidden="True"/>
-            <Button x:Name="Button_Choice_3" Content="Button" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Width="106" Height="70" Click="Button_Choice_3_Click" d:IsHidden="True"/>
-            <Button x:Name="Button_GiveUp" Content="Сдаться / Убежать" HorizontalAlignment="Left" Margin="0,341,0,0" VerticalAlignment="Top" Width="125" Height="38" IsEnabled="False" d:IsHidden="True" />
+        <Grid x:Name="Adventure_Grid" Margin="8,1,0,0" Grid.Column="2">
+            <Button x:Name="Button_Choice_1" Content="Button" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="106" Height="70" Click="Button_Choice_1_Click"/>
+            <Button x:Name="Button_Choice_2" Content="Button" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Width="106" Height="70" Click="Button_Choice_2_Click"/>
+            <Button x:Name="Button_Choice_3" Content="Button" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Width="106" Height="70" Click="Button_Choice_3_Click"/>
+            <Button x:Name="Button_GiveUp" Content="Сдаться / Убежать" HorizontalAlignment="Left" Margin="0,341,0,0" VerticalAlignment="Top" Width="125" Height="38" IsEnabled="False" Click="Button_GiveUp_Click" />
         </Grid>
     </Grid>
 </Window>

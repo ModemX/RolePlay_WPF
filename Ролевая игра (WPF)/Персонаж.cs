@@ -221,7 +221,7 @@ namespace Ролевая_игра__WPF_
         public int ПолучитьЗначениеАтаки()
         {
             Random random = new Random();
-            return (int)Math.Round(random.Next(15, 25) * МножительСилыРун[2], 0);
+            return (int)Math.Round(random.Next(20, 40) * МножительСилыРун[2], 0);
         }
 
         public void RuneUpdate(double[] НаследованныеМножителиСилыРун) => МножительСилыРун = НаследованныеМножителиСилыРун;

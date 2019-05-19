@@ -1,13 +1,9 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Markup;
 
 namespace Ролевая_игра__WPF_
 {
@@ -17,7 +13,7 @@ namespace Ролевая_игра__WPF_
         private Inventory InventoryWindow;
         public List<Персонаж> Персонажи = new List<Персонаж>();
         public List<bool> Обладает_магией = new List<bool>();
-        private List<Предметы.Зелье> ПереченьПредметов = new List<Предметы.Зелье>();
+        public List<Предметы.Зелье> ПереченьПредметов = new List<Предметы.Зелье>();
         private string ConsoleBuffer;
         private int ТекущийПерсонаж;
         public int NextAdventureIs = 0;
@@ -31,24 +27,26 @@ namespace Ролевая_игра__WPF_
         public double[] МножительСилыРун = new double[3] { 1, 1.2, 1 };
         public bool IsBattleMode { get; set; } = false;
         public List<Враги> СписокТекущихВрагов = new List<Враги>();
+        Attack AttackDialog;
 
         public MainWindow()
         {
             InitializeComponent();
-            Console.Text = "Добро пожаловать, герой. Я твой рассказчик, Система Одностороннего Повествования \nИстории, но можешь называть меня СОПИ ♥. \nДля начала предалагаю начать с создания твоего героя или загрузить свое прохождение из прошлой жизни.\n";
+            Console.Text = "Добро пожаловать, герой. Я твой рассказчик, Система Одностороннего Повествования Истории, но можешь называть меня СОПИ ♥. \n" +
+                "Для начала предалагаю начать с создания твоего героя или загрузить свое прохождение из прошлой жизни.\n";
             ТекущийПерсонаж = 0;
-
-            ПереченьПредметов.Add(new Предметы.Малое_Зелье_Лечения());
-            ПереченьПредметов.Add(new Предметы.Малое_Зелье_Лечения());
-            ПереченьПредметов.Add(new Предметы.Малое_Зелье_Лечения());
-            ПереченьПредметов.Add(new Предметы.Бутылек_Маны());
-            ПереченьПредметов.Add(new Предметы.Бутылек_Маны());
-            ПереченьПредметов.Add(new Предметы.Бутылек_Маны());
 
             Menu_Grid.Visibility = Visibility.Visible;
             Adventure_Grid.Visibility = Visibility.Hidden;
-
         }
+
+        //~MainWindow()
+        //{
+        //    Close();
+        //    InventoryWindow.Close();
+        //    AddHeroWindow.Close();
+        //    AttackDialog.Close();
+        //}
 
         private void MainWindow_Button_AddHero_Click(object sender, RoutedEventArgs e)
         {
@@ -97,12 +95,12 @@ namespace Ролевая_игра__WPF_
                 MainWindow_Button_GoForAdventure.IsEnabled = true;
                 ТекущийПерсонаж = Персонажи.Count - 1;
             }
-            if (Персонажи.Count == 1)
+            if (Персонажи.Count == 1 || Персонажи.Count == 2)
             {
                 MainWindow_Button_SwitchHero.IsEnabled = true;
 
             }
-            if (Персонажи.Count == 2)
+            if (Персонажи.Count == 3)
             {
                 MainWindow_Button_SwitchHero.IsEnabled = true;
                 MainWindow_Button_AddHero.IsEnabled = false;
@@ -401,7 +399,8 @@ namespace Ролевая_игра__WPF_
                 }
 
                 //загрузка предметов
-                if(ds.Tables["Инвентарь"] != null)
+                if (ds.Tables["Инвентарь"] != null)
+                {
                     foreach (DataRow строка in ds.Tables["Инвентарь"].Rows)
                     {
                         if (строка[0] as string == "[+25 ОЗ] Малое зелье лечения")
@@ -429,6 +428,7 @@ namespace Ролевая_игра__WPF_
                             ПереченьПредметов.Add(new Предметы.Банка_маны());
                         }
                     }
+                }
 
                 InventoryWindow = new Inventory(Персонажи, ПереченьПредметов);
 
@@ -456,22 +456,82 @@ namespace Ролевая_игра__WPF_
             adventureScripts = new AdventureScripts(NextAdventureIs, this);
         }
 
-        public string Get_Button_Choice_1() => (string)Button_Choice_1.Content;
-        public void Change_Button_Choice_1(string Text) => Button_Choice_1.Content = Text;
-        public string Get_Button_Choice_2() => (string)Button_Choice_2.Content;
-        public void Change_Button_Choice_2(string Text) => Button_Choice_2.Content = Text;
-        public string Get_Button_Choice_3() => (string)Button_Choice_3.Content;
-        public void Change_Button_Choice_3(string Text) => Button_Choice_3.Content = Text;
+        public string Get_Button_Choice_1()
+        {
+            return (string)Button_Choice_1.Content;
+        }
+
+        public void Change_Button_Choice_1(string Text)
+        {
+            Button_Choice_1.Content = Text;
+        }
+
+        public string Get_Button_Choice_2()
+        {
+            return (string)Button_Choice_2.Content;
+        }
+
+        public void Change_Button_Choice_2(string Text)
+        {
+            Button_Choice_2.Content = Text;
+        }
+
+        public string Get_Button_Choice_3()
+        {
+            return (string)Button_Choice_3.Content;
+        }
+
+        public void Change_Button_Choice_3(string Text)
+        {
+            Button_Choice_3.Content = Text;
+        }
 
         private void Button_Choice_1_Click(object sender, RoutedEventArgs e)
         {
-            if(!IsBattleMode)
+            if (!IsBattleMode)
             {
                 adventureScripts.Choices_Add(1);
                 adventureScripts.Воспроизведение_Шагов();
             }
             else
             {
+                int OrderOf = adventureScripts.OrderOf;
+                List<object> ПорядокАтаки = new List<object>();
+
+                foreach (Персонаж Персонаж in Персонажи)
+                {
+                    Персонаж.МножительСилыРун = МножительСилыРун;
+                    ПорядокАтаки.Add(Персонаж);
+                }
+                foreach (Враги Враг in СписокТекущихВрагов)
+                {
+                    ПорядокАтаки.Add(Враг);
+                }
+
+                AttackDialog = new Attack(СписокТекущихВрагов, Персонажи[OrderOf]);
+                AttackDialog.ShowDialog();
+                if (AttackDialog.DialogResult == true)
+                {
+                    СписокТекущихВрагов = AttackDialog.GetСписокТекущихВрагов();
+                    if (Персонажи[OrderOf].Пол == true)
+                    {
+                        ConsoleWriteLine($"CОПИ: {Персонажи[OrderOf].Имя} нанёс {AttackDialog.ЗначениеАтаки} единиц урона здоровью цели: " +
+                        $"{СписокТекущихВрагов[AttackDialog.SelectedEnemy].ИмяВрага}. Текущие значение здоровья врага стало " +
+                        $"{СписокТекущихВрагов[AttackDialog.SelectedEnemy].ЗдоровьеВрага} единиц здоровья.");
+                    }
+                    else
+                    {
+                        ConsoleWriteLine($"CОПИ: {Персонажи[OrderOf].Имя} нанесла {AttackDialog.ЗначениеАтаки} единиц урона здоровью цели: " +
+                        $"{СписокТекущихВрагов[AttackDialog.SelectedEnemy].ИмяВрага}. Текущие значение здоровья врага стало " +
+                        $"{СписокТекущихВрагов[AttackDialog.SelectedEnemy].ЗдоровьеВрага} единиц здоровья.");
+
+                    }
+                    Random random = new Random();
+                    Персонажи[OrderOf].Добавить_ОчкиОпыта((uint)random.Next(100, 150));
+
+                    adventureScripts.IncreaseOrderOf();
+                }
+                adventureScripts.Battle(СписокТекущихВрагов, ПорядокАтаки);
 
             }
         }
@@ -494,12 +554,35 @@ namespace Ролевая_игра__WPF_
             }
         }
 
-        public void Block_Button_Choice_1() => Button_Choice_1.Visibility = Visibility.Hidden;
-        public void UnBlock_Button_Choice_1() => Button_Choice_1.Visibility = Visibility.Visible;
-        public void Block_Button_Choice_2() => Button_Choice_2.Visibility = Visibility.Hidden;
-        public void UnBlock_Button_Choice_2() => Button_Choice_2.Visibility = Visibility.Visible;
-        public void Block_Button_Choice_3() => Button_Choice_3.Visibility = Visibility.Hidden;
-        public void UnBlock_Button_Choice_3() => Button_Choice_3.Visibility = Visibility.Visible;
+        public void Block_Button_Choice_1()
+        {
+            Button_Choice_1.Visibility = Visibility.Hidden;
+        }
+
+        public void UnBlock_Button_Choice_1()
+        {
+            Button_Choice_1.Visibility = Visibility.Visible;
+        }
+
+        public void Block_Button_Choice_2()
+        {
+            Button_Choice_2.Visibility = Visibility.Hidden;
+        }
+
+        public void UnBlock_Button_Choice_2()
+        {
+            Button_Choice_2.Visibility = Visibility.Visible;
+        }
+
+        public void Block_Button_Choice_3()
+        {
+            Button_Choice_3.Visibility = Visibility.Hidden;
+        }
+
+        public void UnBlock_Button_Choice_3()
+        {
+            Button_Choice_3.Visibility = Visibility.Visible;
+        }
 
         public void ConsoleWriteLine(string Text)
         {
@@ -507,6 +590,33 @@ namespace Ролевая_игра__WPF_
             Console.Text += '\n';
             Console.Text += Text;
             ScrollViewer.ScrollToEnd();
+        }
+
+        private void Button_GiveUp_Click(object sender, RoutedEventArgs e)
+        {
+            IsBattleMode = false;
+            adventureScripts.Choices_Add(1);
+            adventureScripts.Choices_Add(1);
+
+            if (Персонажи.Count == 1 && Персонажи[0].Пол == true)
+            {
+                ConsoleWriteLine("- Стража! У нас предатель и трус! Убить героя!");
+            }
+            else if (Персонажи.Count == 1 && Персонажи[0].Пол == false)
+            {
+                ConsoleWriteLine("- Стража! У нас предательница и трусиха! Убить героиню!");
+            }
+            else
+            {
+                ConsoleWriteLine("- Стража! У нас предатели и трусы! Убить героев!");
+            }
+
+            foreach (Персонаж персонаж in Персонажи)
+            {
+                персонаж.ИзменениеСостоянияЗдоровья("урон", 1000);
+            }
+
+            adventureScripts.GameOver();
         }
     }
 }

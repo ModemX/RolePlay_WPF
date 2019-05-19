@@ -12,6 +12,9 @@ namespace Ролевая_игра__WPF_
     {
         private List<int> Choices = new List<int>();
         private MainWindow MainWindow;
+        public int OrderOf { get; private set; } = 0;
+
+        private List<object> ПорядокАтаки = new List<object>();
         public AdventureScripts(int CaseOfAdventure, MainWindow MainForm)
         {
             MainWindow = MainForm;
@@ -151,6 +154,14 @@ namespace Ролевая_игра__WPF_
             {
                 MainWindow.ConsoleWriteLine($"- Единственное что мы можем вам дать это несколько рун, " +
                     $"усиливающие ваши способности и немного целебных и магических снадобий. Используйте их с умом!");
+
+                MainWindow.ПереченьПредметов.Add(new Предметы.Малое_Зелье_Лечения());
+                MainWindow.ПереченьПредметов.Add(new Предметы.Малое_Зелье_Лечения());
+                MainWindow.ПереченьПредметов.Add(new Предметы.Малое_Зелье_Лечения());
+                MainWindow.ПереченьПредметов.Add(new Предметы.Бутылек_Маны());
+                MainWindow.ПереченьПредметов.Add(new Предметы.Бутылек_Маны());
+                MainWindow.ПереченьПредметов.Add(new Предметы.Бутылек_Маны());
+
                 MainWindow.ConsoleWriteLine("СОПИ: Предметы получены: Руна Здоровья (Ур. 1 из 3). " +
                     "Описание: Увеличивает количесво здоровья у персонажей. Обладает множителем \"x1\"");
                 MainWindow.ConsoleWriteLine("СОПИ: Предметы получены: Руна Эффективности использования заклинаний (Ур. 1 из 3). " +
@@ -170,7 +181,7 @@ namespace Ролевая_игра__WPF_
 
                 MainWindow.Change_Button_Choice_1("Продолжить \nследовать");
             }
-            if(Choices.Count == 4)
+            if (Choices.Count == 4)
             {
                 MainWindow.ConsoleWriteLine("СОПИ: Вы следуете за магами почти сквозь всё поместье к огромному " +
                     "тренировочному залу где вас уже поджидала стража. Увидев подходящих магов самый первый из их ряда " +
@@ -182,7 +193,7 @@ namespace Ролевая_игра__WPF_
 
                 MainWindow.Change_Button_Choice_1("[Принять \nвызов]");
             }
-            if(Choices.Count == 5)
+            if (Choices.Count == 5)
             {
                 MainWindow.IsBattleMode = true;
 
@@ -192,9 +203,195 @@ namespace Ролевая_игра__WPF_
                 MainWindow.Change_Button_Choice_1("Атака");
                 MainWindow.Change_Button_Choice_2("Использовать \nзаклинание");
                 MainWindow.Change_Button_Choice_3("Защита");
+                MainWindow.Button_GiveUp.IsEnabled = true;
 
                 MainWindow.СписокТекущихВрагов.Add(new Враги.ГлаваСтражи());
+
+                List<object> ПорядокАтаки = new List<object>();
+
+                for (int i = 0; i < MainWindow.Персонажи.Count; i++)
+                {
+                    Персонаж Персонаж = MainWindow.Персонажи.ElementAt(i);
+                    ПорядокАтаки.Add(Персонаж);
+                }
+                foreach (Враги Враг in MainWindow.СписокТекущихВрагов)
+                {
+                    ПорядокАтаки.Add(Враг);
+                }
+
+                Battle(MainWindow.СписокТекущихВрагов, ПорядокАтаки);
             }
+            if (Choices.Count == 6)
+            {
+                MainWindow.ConsoleWriteLine("- Достаточно, мы увидели что хотели. Мы можем не переживать за своё королевство. " +
+                    "Наши лекари вылечат вас и восполнят запасы маны. Идите отдыхайте. Поговорим о делах завтра.");
+
+                foreach (Персонаж персонаж in MainWindow.Персонажи)
+                {
+                    персонаж.ИзменениеСостоянияЗдоровья("лечение", 1000);
+                }
+                MainWindow.ConsoleWriteLine("СОПИ: Здоровье всех персонажей восстановлено.");
+
+                foreach (Персонаж персонаж in MainWindow.Персонажи)
+                {
+                    if (персонаж is Персонаж_с_магией)
+                    {
+                        (персонаж as Персонаж_с_магией).ИзменениеСостоянияМаны("восполнение", 1000);
+                    }
+                }
+                MainWindow.ConsoleWriteLine("СОПИ: Мана всех персонажей восполнена.");
+
+
+                MainWindow.Block_Button_Choice_2();
+                MainWindow.Block_Button_Choice_3();
+
+                MainWindow.Change_Button_Choice_1("[Пойти отдыхать]");
+                MainWindow.Change_Button_Choice_2("");
+                MainWindow.Change_Button_Choice_3("");
+            }
+            if (Choices.Count == 7)
+            {
+                MainWindow.ConsoleWriteLine("\n");
+                MainWindow.ConsoleWriteLine("\n");
+                MainWindow.ConsoleWriteLine("Демоверсия окончена.");
+
+                GameOver();
+            }
+            if (Choices.Count == 8)
+            {
+                MainWindow.Close();
+            }
+
+
+        }
+        public void Battle(List<Враги> СписокТекущихВрагов, List<object> ПорядокАтаки)
+        {
+            this.ПорядокАтаки = ПорядокАтаки;
+            if (AreEnemiesAlive(СписокТекущихВрагов))
+            {
+                if (AreHeroesAlive(MainWindow.Персонажи))
+                {
+                    if (ПорядокАтаки[OrderOf] is Враги)
+                    {
+                        Random random = new Random();
+                        int СлучайныйПерсонаж = random.Next(0, MainWindow.Персонажи.Count);
+                        MainWindow.Персонажи[СлучайныйПерсонаж].ИзменениеСостоянияЗдоровья("урон", (uint)(ПорядокАтаки[OrderOf] as Враги).СилаАтаки);
+
+                        MainWindow.ConsoleWriteLine($"CОПИ: {(ПорядокАтаки[OrderOf] as Враги).ИмяВрага} нанёс {MainWindow.Персонажи[СлучайныйПерсонаж].Имя} " +
+                            $"{(ПорядокАтаки[OrderOf] as Враги).СилаАтаки} единиц урона. У {MainWindow.Персонажи[СлучайныйПерсонаж].Имя} осталось " +
+                            $"{MainWindow.Персонажи[СлучайныйПерсонаж].Очки_Здоровья} единиц здоровья.");
+
+                        IncreaseOrderOf();
+                    }
+                }
+                else
+                {
+                    GameOver(); //все герои умерли
+                }
+            }
+            else
+            {
+                MainWindow.IsBattleMode = false;
+                Choices_Add(1);
+                Воспроизведение_Шагов();
+            }
+        }
+        public bool AreEnemiesAlive(List<Враги> СписокТекущихВрагов)
+        {
+            if (СписокТекущихВрагов[0].ЗдоровьеВрага < 0.5 * СписокТекущихВрагов[0].МаксимальноеЗдоровье && СписокТекущихВрагов[0] is Враги.ГлаваСтражи)
+            {
+                MainWindow.IsBattleMode = false;
+                MainWindow.СписокТекущихВрагов.Clear();
+            }
+
+            if (СписокТекущихВрагов.Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        public bool AreHeroesAlive(List<Персонаж> Персонажи)
+        {
+            int КоличествоУмершихГероев = 0;
+
+            for (int i = 0; i < Персонажи.Count; i++)
+            {
+                Персонаж персонаж = Персонажи[i];
+                if (персонаж.Состояние[4] == true)
+                {
+                    КоличествоУмершихГероев++;
+                }
+            }
+
+            if (КоличествоУмершихГероев == 0)
+            {
+                return true;
+            }
+            else if (КоличествоУмершихГероев == 1 && Персонажи.Count != КоличествоУмершихГероев)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public void IncreaseOrderOf()
+        {
+            if (OrderOf == ПорядокАтаки.Count - 1)
+            {
+                OrderOf = 0;
+            }
+            else
+            {
+                OrderOf++;
+            }
+        }
+        public void GameOver()
+        {
+            MainWindow.Button_Choice_2.Visibility = Visibility.Hidden;
+            MainWindow.Button_Choice_3.Visibility = Visibility.Hidden;
+            MainWindow.Button_GiveUp.Visibility = Visibility.Hidden;
+            MainWindow.Button_Inventory.Visibility = Visibility.Hidden;
+
+            int КоличествоМёртвыхГероев = 0;
+            foreach (Персонаж персонаж in MainWindow.Персонажи)
+            {
+                if (персонаж.Состояние[4] == true)
+                {
+                    КоличествоМёртвыхГероев++;
+                }
+            }
+            if (КоличествоМёртвыхГероев == MainWindow.Персонажи.Count)
+            {
+                MainWindow.ConsoleWriteLine("СОПИ: Игра окончена, все герои умерли");
+            }
+            else
+            {
+                MainWindow.ConsoleWriteLine("СОПИ: Игра окончена.");
+            }
+
+            int ОбщийСчет = 0;
+
+            foreach (Персонаж персонаж in MainWindow.Персонажи)
+            {
+                if (персонаж.Пол == true)
+                {
+                    MainWindow.ConsoleWriteLine($"СОПИ: В течении прохождения игры герой {персонаж.Имя} получил {персонаж.Очки_Опыта} очков опыта.");
+                }
+                else if (персонаж.Пол == false)
+                {
+                    MainWindow.ConsoleWriteLine($"СОПИ: В течении прохождения игры героиня {персонаж.Имя} получила {персонаж.Очки_Опыта} очков опыта.");
+                }
+                ОбщийСчет += (int)персонаж.Очки_Опыта;
+            }
+
+            MainWindow.ConsoleWriteLine($"СОПИ: Общий счет игрока составил: {ОбщийСчет} очков.");
+
+            MainWindow.Change_Button_Choice_1("[Закрыть \nигру]");
         }
     }
 }
