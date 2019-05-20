@@ -20,9 +20,9 @@ namespace Ролевая_игра__WPF_
 
     public partial class Inventory : Window
     {
-        List<Персонаж> Персонажи;
-        List<Предметы.Зелье> ПереченьПредметов;
-        List<string> НазванияПредметов = new List<string>();
+        private List<Персонаж> Персонажи;
+        private List<Предметы.Зелье> ПереченьПредметов;
+        private List<string> НазванияПредметов = new List<string>();
 
         public Inventory(List<Персонаж> Текущие_Персонажи, List<Предметы.Зелье> ПереченьПредметов)
         {
@@ -48,15 +48,64 @@ namespace Ролевая_игра__WPF_
         {
             if (Список_Предметов.SelectedItem != null && Выпадающий_Список_Персонажей.SelectedIndex != -1)
             {
-                Button_Use.IsEnabled = true;
+                if (ПереченьПредметов[Список_Предметов.SelectedIndex] is Предметы.Зелье_маны && Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] is Персонаж_с_магией)
+                {
+                    Button_Use.IsEnabled = true;
+                }
+                else
+                if(Персонажи[Выпадающий_Список_Персонажей.SelectedIndex].Очки_Здоровья != Персонажи[Выпадающий_Список_Персонажей.SelectedIndex].Максимальное_здоровье
+                   && ПереченьПредметов[Список_Предметов.SelectedIndex] is Предметы.Зелье_Лечения)
+                {
+                    Button_Use.IsEnabled = true;
+                }
+                else 
+                if (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] is Персонаж_с_магией 
+                   &&
+                   (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] as Персонаж_с_магией).Очки_Маны 
+                   != 
+                   (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] as Персонаж_с_магией).Максимальная_мана 
+                   && 
+                   ПереченьПредметов[Список_Предметов.SelectedIndex] is Предметы.Зелье_маны)
+                {
+                    Button_Use.IsEnabled = true;
+                }
+                else
+                {
+                    Button_Use.IsEnabled = false;
+                }
             }
         }
         private void Выпадающий_Список_Персонажей_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (Список_Предметов.SelectedItem != null && Выпадающий_Список_Персонажей.SelectedIndex != -1)
             {
-                Button_Use.IsEnabled = true;
+                if (ПереченьПредметов[Список_Предметов.SelectedIndex] is Предметы.Зелье_маны && Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] is Персонаж_с_магией)
+                {
+                    Button_Use.IsEnabled = true;
+                }
+                else
+                if (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex].Очки_Здоровья != Персонажи[Выпадающий_Список_Персонажей.SelectedIndex].Максимальное_здоровье
+                   && ПереченьПредметов[Список_Предметов.SelectedIndex] is Предметы.Зелье_Лечения)
+                {
+                    Button_Use.IsEnabled = true;
+                }
+                else
+                if (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] is Персонаж_с_магией
+                   &&
+                   (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] as Персонаж_с_магией).Очки_Маны
+                   !=
+                   (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] as Персонаж_с_магией).Максимальная_мана
+                   &&
+                   ПереченьПредметов[Список_Предметов.SelectedIndex] is Предметы.Зелье_маны)
+                {
+                    Button_Use.IsEnabled = true;
+                }
+                else
+                {
+                    Button_Use.IsEnabled = false;
+                }
             }
+
             Info_HP.Content = "Здоровье: " + Персонажи[Выпадающий_Список_Персонажей.SelectedIndex].Очки_Здоровья + " HP";
             if (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] is Персонаж_с_магией)
             {
@@ -155,7 +204,7 @@ namespace Ролевая_игра__WPF_
             }
         }
 
-        int SearchForItem(string Название_искомого_объекта)
+        private int SearchForItem(string Название_искомого_объекта)
         {
             for (int i = 0; i < НазванияПредметов.Count; i++)
             {

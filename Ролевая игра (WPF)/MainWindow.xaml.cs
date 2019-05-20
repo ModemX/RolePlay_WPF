@@ -27,7 +27,8 @@ namespace Ролевая_игра__WPF_
         public double[] МножительСилыРун = new double[3] { 1, 1.2, 1 };
         public bool IsBattleMode { get; set; } = false;
         public List<Враги> СписокТекущихВрагов = new List<Враги>();
-        Attack AttackDialog;
+        private Attack AttackDialog;
+        public bool[] СписокГероевВЗащите;
 
         public MainWindow()
         {
@@ -39,14 +40,6 @@ namespace Ролевая_игра__WPF_
             Menu_Grid.Visibility = Visibility.Visible;
             Adventure_Grid.Visibility = Visibility.Hidden;
         }
-
-        //~MainWindow()
-        //{
-        //    Close();
-        //    InventoryWindow.Close();
-        //    AddHeroWindow.Close();
-        //    AttackDialog.Close();
-        //}
 
         private void MainWindow_Button_AddHero_Click(object sender, RoutedEventArgs e)
         {
@@ -64,13 +57,15 @@ namespace Ролевая_игра__WPF_
                     bool пол = AddHeroWindow.Пол;
                     if (пол)
                     {
-                        Console.Text = $"Появился новый герой! Он {((Персонажи[Персонажи.Count - 1] as Персонаж) as Персонаж).Раса} в возрасте " +
-                            $"{Персонаж.Лет_Лета_Год((Персонажи[Персонажи.Count - 1] as Персонаж).Возраст)} и зовут его {(Персонажи[Персонажи.Count - 1] as Персонаж).Имя}\n";
+                        ConsoleWriteLine($"Появился новый герой! Он {((Персонажи[Персонажи.Count - 1] as Персонаж) as Персонаж).Раса} в возрасте " +
+                            $"{Персонаж.Лет_Лета_Год((Персонажи[Персонажи.Count - 1] as Персонаж).Возраст)} " +
+                            $"и зовут его {(Персонажи[Персонажи.Count - 1] as Персонаж).Имя}\n");
                     }
                     else
                     {
-                        Console.Text = $"Появилась новая героиня! Она {(Персонажи[Персонажи.Count - 1] as Персонаж).Раса} в возрасте " +
-                            $"{Персонаж.Лет_Лета_Год((Персонажи[Персонажи.Count - 1] as Персонаж).Возраст)} и зовут её {(Персонажи[Персонажи.Count - 1] as Персонаж).Имя}\n";
+                        ConsoleWriteLine($"Появилась новая героиня! Она {(Персонажи[Персонажи.Count - 1] as Персонаж).Раса} в возрасте " +
+                            $"{Персонаж.Лет_Лета_Год((Персонажи[Персонажи.Count - 1] as Персонаж).Возраст)} " +
+                            $"и зовут её {(Персонажи[Персонажи.Count - 1] as Персонаж).Имя}\n");
                     }
                 }
                 else //Персонажи с магией
@@ -80,13 +75,15 @@ namespace Ролевая_игра__WPF_
                     bool пол2 = AddHeroWindow.Пол;
                     if (пол2)
                     {
-                        Console.Text = $"Появился новый герой! Он {(Персонажи[Персонажи.Count - 1] as Персонаж_с_магией).Раса} с познаниями в магии и в возрасте " +
-                            $"{Персонаж.Лет_Лета_Год((Персонажи[Персонажи.Count - 1] as Персонаж_с_магией).Возраст)}, а зовут его {(Персонажи[Персонажи.Count - 1] as Персонаж_с_магией).Имя}\n";
+                        ConsoleWriteLine($"Появился новый герой! Он {(Персонажи[Персонажи.Count - 1] as Персонаж_с_магией).Раса} с познаниями в магии и в возрасте " +
+                            $"{Персонаж.Лет_Лета_Год((Персонажи[Персонажи.Count - 1] as Персонаж_с_магией).Возраст)}, " +
+                            $"а зовут его {(Персонажи[Персонажи.Count - 1] as Персонаж_с_магией).Имя}\n");
                     }
                     else
                     {
-                        Console.Text = $"Появилась новая героиня! Она {(Персонажи[Персонажи.Count - 1] as Персонаж_с_магией).Раса} с познаниями в магии и в возрасте " +
-                            $"{Персонаж.Лет_Лета_Год((Персонажи[Персонажи.Count - 1] as Персонаж_с_магией).Возраст)}, а зовут её {(Персонажи[Персонажи.Count - 1] as Персонаж_с_магией).Имя}\n";
+                        ConsoleWriteLine($"Появилась новая героиня! Она {(Персонажи[Персонажи.Count - 1] as Персонаж_с_магией).Раса} с познаниями в магии и в возрасте " +
+                            $"{Персонаж.Лет_Лета_Год((Персонажи[Персонажи.Count - 1] as Персонаж_с_магией).Возраст)}, " +
+                            $"а зовут её {(Персонажи[Персонажи.Count - 1] as Персонаж_с_магией).Имя}\n");
                     }
                 }
                 MainWindow_Button_ShowInfo.IsEnabled = true;
@@ -148,12 +145,12 @@ namespace Ролевая_игра__WPF_
             if (ТекущийПерсонаж == Персонажи.Count - 1)
             {
                 ТекущийПерсонаж = 0;
-                Console.Text += $"Инициативу принимает {(Персонажи[ТекущийПерсонаж] as Персонаж).Имя}\n";
+                ConsoleWriteLine($"Инициативу принимает {(Персонажи[ТекущийПерсонаж] as Персонаж).Имя}\n");
             }
             else
             {
                 ТекущийПерсонаж++;
-                Console.Text += $"Инициативу принимает {(Персонажи[ТекущийПерсонаж] as Персонаж).Имя}\n";
+                ConsoleWriteLine($"Инициативу принимает {(Персонажи[ТекущийПерсонаж] as Персонаж).Имя}\n");
             }
         }
 
@@ -320,9 +317,13 @@ namespace Ролевая_игра__WPF_
                     DoLoadFile();
                 }
             }
-            Button_Inventory.IsEnabled = true;
-            MainWindow_Button_SwitchHero.IsEnabled = true;
-            MainWindow_Button_GoForAdventure.IsEnabled = true;
+            if (File.Exists("SaveFile.svfl"))
+            {
+                Button_Inventory.IsEnabled = true;
+                MainWindow_Button_SwitchHero.IsEnabled = true;
+                MainWindow_Button_GoForAdventure.IsEnabled = true;
+            }
+
         }
 
         private void DoLoadFile()
@@ -432,6 +433,9 @@ namespace Ролевая_игра__WPF_
 
                 InventoryWindow = new Inventory(Персонажи, ПереченьПредметов);
 
+                if (Персонажи.Count == 3)
+                    MainWindow_Button_AddHero.IsEnabled = false;
+
                 MainWindow_Button_ShowInfo.IsEnabled = true;
                 Button_Save.IsEnabled = true;
             }
@@ -452,6 +456,7 @@ namespace Ролевая_игра__WPF_
         {
             Menu_Grid.Visibility = Visibility.Hidden;
             Adventure_Grid.Visibility = Visibility.Visible;
+            СписокГероевВЗащите = new bool[Персонажи.Count];
 
             adventureScripts = new AdventureScripts(NextAdventureIs, this);
         }
@@ -491,6 +496,7 @@ namespace Ролевая_игра__WPF_
             if (!IsBattleMode)
             {
                 adventureScripts.Choices_Add(1);
+                ConsoleWriteLine(1);
                 adventureScripts.Воспроизведение_Шагов();
             }
             else
@@ -531,8 +537,7 @@ namespace Ролевая_игра__WPF_
 
                     adventureScripts.IncreaseOrderOf();
                 }
-                adventureScripts.Battle(СписокТекущихВрагов, ПорядокАтаки);
-
+                adventureScripts.Battle(СписокТекущихВрагов, ПорядокАтаки, СписокГероевВЗащите);
             }
         }
 
@@ -541,6 +546,7 @@ namespace Ролевая_игра__WPF_
             if (!IsBattleMode)
             {
                 adventureScripts.Choices_Add(2);
+                ConsoleWriteLine(2);
                 adventureScripts.Воспроизведение_Шагов();
             }
         }
@@ -550,7 +556,25 @@ namespace Ролевая_игра__WPF_
             if (!IsBattleMode)
             {
                 adventureScripts.Choices_Add(3);
+                ConsoleWriteLine(3);
                 adventureScripts.Воспроизведение_Шагов();
+            }
+            else
+            {
+                int OrderOf = adventureScripts.OrderOf;
+
+                СписокГероевВЗащите[OrderOf] = true;
+                if (Персонажи[OrderOf].Пол == true)
+                {
+                    ConsoleWriteLine($"CОПИ: {Персонажи[OrderOf].Имя} принял защитную стойку. Входящий урон снижен в 2 раза.");
+                }
+                else
+                {
+                    ConsoleWriteLine($"CОПИ: {Персонажи[OrderOf].Имя} приняла защитную стойку. Входящий урон снижен в 2 раза.");
+
+                }
+                adventureScripts.IncreaseOrderOf();
+                adventureScripts.Battle(СписокТекущихВрагов, adventureScripts.ПорядокАтаки, СписокГероевВЗащите);
             }
         }
 
@@ -591,6 +615,36 @@ namespace Ролевая_игра__WPF_
             Console.Text += Text;
             ScrollViewer.ScrollToEnd();
         }
+        public void ConsoleWriteLine(int НомерВыбора)
+        {
+            Console.Text += '\n';
+            Console.Text += '\n';
+            switch (НомерВыбора)
+            {
+                case 1:
+                    {
+                        string temp = (string)Button_Choice_1.Content;
+                        temp = temp.Replace('\n', ' ');
+                        Console.Text += $" - {temp}";
+                    }
+                    break;
+                case 2:
+                    {
+                        string temp = (string)Button_Choice_2.Content;
+                        temp = temp.Replace('\n', ' ');
+                        Console.Text += $" - {temp}";
+                    }
+                    break;
+                case 3:
+                    {
+                        string temp = (string)Button_Choice_3.Content;
+                        temp = temp.Replace('\n', ' ');
+                        Console.Text += $" - {temp}";
+                    }
+                    break;
+            }
+            ScrollViewer.ScrollToEnd();
+        }
 
         private void Button_GiveUp_Click(object sender, RoutedEventArgs e)
         {
@@ -617,6 +671,39 @@ namespace Ролевая_игра__WPF_
             }
 
             adventureScripts.GameOver();
+        }
+
+        public void SetRuneRank(int i)
+        {
+            switch (i)
+            {
+                case 1:
+                    {
+                        МножительСилыРун[0] = 1;
+                        МножительСилыРун[1] = 1.2;
+                        МножительСилыРун[2] = 1;
+                    }
+                    break;
+                case 2:
+                    {
+                        МножительСилыРун[0] = 2;
+                        МножительСилыРун[1] = 1;
+                        МножительСилыРун[2] = 1.5;
+                    }
+                    break;
+                case 3:
+                    {
+                        МножительСилыРун[0] = 3;
+                        МножительСилыРун[1] = 0.75;
+                        МножительСилыРун[2] = 2;
+                    }
+                    break;
+                default:
+                    {
+                        SetRuneRank(1);
+                    }
+                    break;
+            }
         }
     }
 }
