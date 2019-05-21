@@ -13,8 +13,6 @@ namespace Ролевая_игра__WPF_
         private List<int> Choices = new List<int>();
         private MainWindow MainWindow;
         public int OrderOf { get; private set; } = 0;
-
-        public List<object> ПорядокАтаки = new List<object>();
         public AdventureScripts(int CaseOfAdventure, MainWindow MainForm)
         {
             MainWindow = MainForm;
@@ -191,9 +189,6 @@ namespace Ролевая_игра__WPF_
             {
                 MainWindow.IsBattleMode = true;
 
-                MainWindow.UnBlock_Button_Choice_2();
-                MainWindow.UnBlock_Button_Choice_3();
-
                 MainWindow.Change_Button_Choice_1("Атака");
                 MainWindow.Change_Button_Choice_2("Использовать \nзаклинание");
                 MainWindow.Change_Button_Choice_3("Защита");
@@ -201,19 +196,17 @@ namespace Ролевая_игра__WPF_
 
                 MainWindow.СписокТекущихВрагов.Add(new Враги.ГлаваСтражи());
 
-                List<object> ПорядокАтаки = new List<object>();
-
                 for (int i = 0; i < MainWindow.Персонажи.Count; i++)
                 {
                     Персонаж Персонаж = MainWindow.Персонажи.ElementAt(i);
-                    ПорядокАтаки.Add(Персонаж);
+                    MainWindow.ПорядокАтаки.Add(Персонаж);
                 }
                 foreach (Враги Враг in MainWindow.СписокТекущихВрагов)
                 {
-                    ПорядокАтаки.Add(Враг);
+                    MainWindow.ПорядокАтаки.Add(Враг);
                 }
 
-                Battle(MainWindow.СписокТекущихВрагов, ПорядокАтаки, MainWindow.СписокГероевВЗащите);
+                Battle(MainWindow.СписокТекущихВрагов, MainWindow.ПорядокАтаки, MainWindow.СписокГероевВЗащите);
             }
             if (Choices.Count == 6)
             {
@@ -266,38 +259,57 @@ namespace Ролевая_игра__WPF_
         }
         public void Battle(List<Враги> СписокТекущихВрагов, List<object> ПорядокАтаки, bool[] СписокГероевВЗащите)
         {
-            this.ПорядокАтаки = ПорядокАтаки;
+            if (MainWindow.ПорядокАтаки[OrderOf] is Персонаж_с_магией)
+                MainWindow.UnBlock_Button_Choice_2();
+            else
+            {
+                MainWindow.Block_Button_Choice_2();
+            }
+            MainWindow.UnBlock_Button_Choice_3();
+
+            MainWindow.ПорядокАтаки = ПорядокАтаки;
             if (AreEnemiesAlive(СписокТекущихВрагов))
             {
                 if (AreHeroesAlive(MainWindow.Персонажи))
                 {
                     if (ПорядокАтаки[OrderOf] is Враги)
                     {
-                        Random random = new Random();
-                        int СлучайныйПерсонаж = random.Next(0, MainWindow.Персонажи.Count);
-                        if (СписокГероевВЗащите[СлучайныйПерсонаж] == true)
+                        if ((ПорядокАтаки[OrderOf] as Враги).IsFrozen == false)
                         {
-                            MainWindow.Персонажи[СлучайныйПерсонаж].ИзменениеСостоянияЗдоровья("урон", (uint)Math.Round(0.5 * (ПорядокАтаки[OrderOf] as Враги).СилаАтаки));
-                        }
-                        else
-                        {
-                            MainWindow.Персонажи[СлучайныйПерсонаж].ИзменениеСостоянияЗдоровья("урон", (uint)(ПорядокАтаки[OrderOf] as Враги).СилаАтаки);
-                        }
+                            Random random = new Random();
+                            int СлучайныйПерсонаж = random.Next(0, MainWindow.Персонажи.Count);
+                            if (СписокГероевВЗащите[СлучайныйПерсонаж] == true)
+                            {
+                                MainWindow.Персонажи[СлучайныйПерсонаж].ИзменениеСостоянияЗдоровья("урон", (uint)Math.Round(0.5 * (ПорядокАтаки[OrderOf] as Враги).СилаАтаки));
+                            }
+                            else
+                            {
+                                MainWindow.Персонажи[СлучайныйПерсонаж].ИзменениеСостоянияЗдоровья("урон", (uint)(ПорядокАтаки[OrderOf] as Враги).СилаАтаки);
+                            }
 
-                        if (СписокГероевВЗащите[СлучайныйПерсонаж])
-                        {
-                            MainWindow.ConsoleWriteLine($"CОПИ: {(ПорядокАтаки[OrderOf] as Враги).ИмяВрага} нанёс {MainWindow.Персонажи[СлучайныйПерсонаж].Имя} " +
-                            $"{0.5 * (ПорядокАтаки[OrderOf] as Враги).СилаАтаки} единиц урона (а должен был: {(ПорядокАтаки[OrderOf] as Враги).СилаАтаки} единиц урона). " +
-                            $"У {MainWindow.Персонажи[СлучайныйПерсонаж].Имя} осталось {MainWindow.Персонажи[СлучайныйПерсонаж].Очки_Здоровья} единиц здоровья.");
-                        }
-                        else
-                        {
-                            MainWindow.ConsoleWriteLine($"CОПИ: {(ПорядокАтаки[OrderOf] as Враги).ИмяВрага} нанёс {MainWindow.Персонажи[СлучайныйПерсонаж].Имя} " +
-                            $"{0.5 * (ПорядокАтаки[OrderOf] as Враги).СилаАтаки} единиц урона. У {MainWindow.Персонажи[СлучайныйПерсонаж].Имя} осталось " +
-                            $"{MainWindow.Персонажи[СлучайныйПерсонаж].Очки_Здоровья} единиц здоровья.");
+                            if (СписокГероевВЗащите[СлучайныйПерсонаж])
+                            {
+                                MainWindow.ConsoleWriteLine($"CОПИ: {(ПорядокАтаки[OrderOf] as Враги).ИмяВрага} нанёс {MainWindow.Персонажи[СлучайныйПерсонаж].Имя} " +
+                                $"{0.5 * (ПорядокАтаки[OrderOf] as Враги).СилаАтаки} единиц урона (а должен был: {(ПорядокАтаки[OrderOf] as Враги).СилаАтаки} единиц урона). " +
+                                $"У {MainWindow.Персонажи[СлучайныйПерсонаж].Имя} осталось {MainWindow.Персонажи[СлучайныйПерсонаж].Очки_Здоровья} единиц здоровья.");
+                            }
+                            else
+                            {
+                                MainWindow.ConsoleWriteLine($"CОПИ: {(ПорядокАтаки[OrderOf] as Враги).ИмяВрага} нанёс {MainWindow.Персонажи[СлучайныйПерсонаж].Имя} " +
+                                $"{(ПорядокАтаки[OrderOf] as Враги).СилаАтаки} единиц урона. У {MainWindow.Персонажи[СлучайныйПерсонаж].Имя} осталось " +
+                                $"{MainWindow.Персонажи[СлучайныйПерсонаж].Очки_Здоровья} единиц здоровья.");
 
+                            }
                         }
                         IncreaseOrderOf();
+
+                        if (MainWindow.ПорядокАтаки[OrderOf] is Персонаж_с_магией)
+                            MainWindow.UnBlock_Button_Choice_2();
+                        else
+                        {
+                            MainWindow.Block_Button_Choice_2();
+                        }
+                        MainWindow.UnBlock_Button_Choice_3();
                     }
                 }
                 else
@@ -357,12 +369,29 @@ namespace Ролевая_игра__WPF_
         }
         public void IncreaseOrderOf()
         {
-            if (OrderOf == ПорядокАтаки.Count - 1)
+
+            if(MainWindow.ПорядокАтаки[OrderOf] is Персонаж_с_магией)
+            {
+                MainWindow.UnBlock_Button_Choice_2();
+            }
+            else
+            {
+                MainWindow.Block_Button_Choice_2();
+            }
+
+            if (OrderOf == MainWindow.ПорядокАтаки.Count - 1)
             {
                 OrderOf = 0;
                 for (int i = 0; i < MainWindow.СписокГероевВЗащите.Length; i++)
                 {
                     MainWindow.СписокГероевВЗащите[i] = false;
+                }
+                foreach (var Существо in MainWindow.ПорядокАтаки)
+                {
+                    if(Существо is Враги)
+                    {
+                        (Существо as Враги).IsFrozen = false;
+                    }
                 }
             }
             else

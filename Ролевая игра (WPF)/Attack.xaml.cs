@@ -23,6 +23,7 @@ namespace Ролевая_игра__WPF_
         Персонаж АтакующийПерсонаж;
         public int ЗначениеАтаки { get; private set; }
         public int SelectedEnemy { get; private set; }
+        public bool IsEnemyKilled { get; private set; }
 
         public Attack(List <Враги> СписокНаследованныхВрагов, Персонаж НаследованныйАтакующийПерсонаж)
         {
@@ -50,6 +51,8 @@ namespace Ролевая_игра__WPF_
             СписокТекущихВрагов[SelectedEnemy].ОтнятьЗдоровье(ЗначениеАтаки);
             DialogResult = true;
             Close();
+            if (ЗначениеАтаки > СписокТекущихВрагов[SelectedEnemy].ЗдоровьеВрага)
+                IsEnemyKilled = true;
         }
 
         public List<Враги> GetСписокТекущихВрагов() => СписокТекущихВрагов;

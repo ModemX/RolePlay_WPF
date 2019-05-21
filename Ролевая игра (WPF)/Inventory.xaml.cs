@@ -42,6 +42,7 @@ namespace Ролевая_игра__WPF_
             this.ПереченьПредметов = ПереченьПредметов;
 
             ReloadInventoryList();
+            Выпадающий_Список_Персонажей.SelectedIndex = 0;
         }
 
         private void Список_Предметов_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -53,18 +54,18 @@ namespace Ролевая_игра__WPF_
                     Button_Use.IsEnabled = true;
                 }
                 else
-                if(Персонажи[Выпадающий_Список_Персонажей.SelectedIndex].Очки_Здоровья != Персонажи[Выпадающий_Список_Персонажей.SelectedIndex].Максимальное_здоровье
+                if (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex].Очки_Здоровья != Персонажи[Выпадающий_Список_Персонажей.SelectedIndex].Максимальное_здоровье
                    && ПереченьПредметов[Список_Предметов.SelectedIndex] is Предметы.Зелье_Лечения)
                 {
                     Button_Use.IsEnabled = true;
                 }
-                else 
-                if (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] is Персонаж_с_магией 
+                else
+                if (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] is Персонаж_с_магией
                    &&
-                   (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] as Персонаж_с_магией).Очки_Маны 
-                   != 
-                   (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] as Персонаж_с_магией).Максимальная_мана 
-                   && 
+                   (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] as Персонаж_с_магией).Очки_Маны
+                   !=
+                   (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] as Персонаж_с_магией).Максимальная_мана
+                   &&
                    ПереченьПредметов[Список_Предметов.SelectedIndex] is Предметы.Зелье_маны)
                 {
                     Button_Use.IsEnabled = true;
@@ -106,15 +107,7 @@ namespace Ролевая_игра__WPF_
                 }
             }
 
-            Info_HP.Content = "Здоровье: " + Персонажи[Выпадающий_Список_Персонажей.SelectedIndex].Очки_Здоровья + " HP";
-            if (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] is Персонаж_с_магией)
-            {
-                Info_MP.Content = "Мана: " + (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] as Персонаж_с_магией).Очки_Маны + " MP";
-            }
-            else
-            {
-                Info_MP.Content = "Мана: N/A";
-            }
+            UpdateFormWindow();
         }
 
         private void Button_Use_Click(object sender, RoutedEventArgs e)
@@ -202,6 +195,8 @@ namespace Ролевая_игра__WPF_
                 Список_Предметов.Items.Add((Предмет as Предметы.Зелье).Название);
                 НазванияПредметов.Add(Предмет.Название);
             }
+
+            UpdateFormWindow();
         }
 
         private int SearchForItem(string Название_искомого_объекта)
@@ -219,6 +214,23 @@ namespace Ролевая_игра__WPF_
         public List<Предметы.Зелье> GetInventory()
         {
             return ПереченьПредметов;
+        }
+
+        private void UpdateFormWindow()
+        {
+            if (Выпадающий_Список_Персонажей.SelectedIndex != -1)
+            {
+                Info_HP.Content = "Здоровье: " + Персонажи[Выпадающий_Список_Персонажей.SelectedIndex].Очки_Здоровья + " ОЗ / " + Персонажи[Выпадающий_Список_Персонажей.SelectedIndex].Максимальное_здоровье + " ОЗ";
+
+                if (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] is Персонаж_с_магией)
+                {
+                    Info_MP.Content = "Мана: " + (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] as Персонаж_с_магией).Очки_Маны + " ОМ / " + (Персонажи[Выпадающий_Список_Персонажей.SelectedIndex] as Персонаж_с_магией).Максимальная_мана + " ОМ";
+                }
+                else
+                {
+                    Info_MP.Content = "Мана: N/A";
+                }
+            }
         }
     }
 }

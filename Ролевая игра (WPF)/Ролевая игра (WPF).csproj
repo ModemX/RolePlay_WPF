@@ -66,7 +66,11 @@
     <Compile Include="Inventory.xaml.cs">
       <DependentUpon>Inventory.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Magic.xaml.cs">
+      <DependentUpon>Magic.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Враги.cs" />
+    <Compile Include="Заклинания.cs" />
     <Compile Include="Персонаж.cs" />
     <Compile Include="Предметы.cs" />
     <Page Include="AddHero.xaml">
@@ -78,6 +82,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Inventory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Magic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

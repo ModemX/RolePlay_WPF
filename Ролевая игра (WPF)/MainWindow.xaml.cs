@@ -24,8 +24,10 @@ namespace Ролевая_игра__WPF_
         /// Эффективность использования заклинаний: [x1.2] [x1] [x0.75]   
         /// Урон: [x1] [x1,5] [x2]
         /// </summary>
-        public double[] МножительСилыРун = new double[3] { 1, 1.2, 1 };
+        public double[] МножительСилыРун = new double[3];
         public bool IsBattleMode { get; set; } = false;
+
+        public List<object> ПорядокАтаки = new List<object>();
         public List<Враги> СписокТекущихВрагов = new List<Враги>();
         private Attack AttackDialog;
         public bool[] СписокГероевВЗащите;
@@ -154,6 +156,7 @@ namespace Ролевая_игра__WPF_
             }
         }
 
+        #region SaveLoad_Region
         private void Button_Save_Click(object sender, RoutedEventArgs e)
         {
             //Сохранение информации о персонажах
@@ -434,7 +437,9 @@ namespace Ролевая_игра__WPF_
                 InventoryWindow = new Inventory(Персонажи, ПереченьПредметов);
 
                 if (Персонажи.Count == 3)
+                {
                     MainWindow_Button_AddHero.IsEnabled = false;
+                }
 
                 MainWindow_Button_ShowInfo.IsEnabled = true;
                 Button_Save.IsEnabled = true;
@@ -444,6 +449,7 @@ namespace Ролевая_игра__WPF_
                 MessageBox.Show("Файл сохранения не найден. Убедитесь что файл сохранения располагается в директории с игрой", "Ошибка.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        #endregion
 
         private void Button_Inventory_Click(object sender, RoutedEventArgs e)
         {
@@ -457,6 +463,7 @@ namespace Ролевая_игра__WPF_
             Menu_Grid.Visibility = Visibility.Hidden;
             Adventure_Grid.Visibility = Visibility.Visible;
             СписокГероевВЗащите = new bool[Персонажи.Count];
+            SetRuneRank(1);
 
             adventureScripts = new AdventureScripts(NextAdventureIs, this);
         }
@@ -502,36 +509,42 @@ namespace Ролевая_игра__WPF_
             else
             {
                 int OrderOf = adventureScripts.OrderOf;
-                List<object> ПорядокАтаки = new List<object>();
-
-                foreach (Персонаж Персонаж in Персонажи)
-                {
-                    Персонаж.МножительСилыРун = МножительСилыРун;
-                    ПорядокАтаки.Add(Персонаж);
-                }
-                foreach (Враги Враг in СписокТекущихВрагов)
-                {
-                    ПорядокАтаки.Add(Враг);
-                }
 
                 AttackDialog = new Attack(СписокТекущихВрагов, Персонажи[OrderOf]);
                 AttackDialog.ShowDialog();
                 if (AttackDialog.DialogResult == true)
                 {
                     СписокТекущихВрагов = AttackDialog.GetСписокТекущихВрагов();
-                    if (Персонажи[OrderOf].Пол == true)
+
+                    if (AttackDialog.IsEnemyKilled == false)
                     {
-                        ConsoleWriteLine($"CОПИ: {Персонажи[OrderOf].Имя} нанёс {AttackDialog.ЗначениеАтаки} единиц урона здоровью цели: " +
-                        $"{СписокТекущихВрагов[AttackDialog.SelectedEnemy].ИмяВрага}. Текущие значение здоровья врага стало " +
-                        $"{СписокТекущихВрагов[AttackDialog.SelectedEnemy].ЗдоровьеВрага} единиц здоровья.");
+                        if (Персонажи[OrderOf].Пол == true)
+                        {
+                            ConsoleWriteLine($"CОПИ: {Персонажи[OrderOf].Имя} нанёс {AttackDialog.ЗначениеАтаки} единиц урона здоровью цели: " +
+                            $"{СписокТекущихВрагов[AttackDialog.SelectedEnemy].ИмяВрага}. Текущие значение здоровья врага стало " +
+                            $"{СписокТекущихВрагов[AttackDialog.SelectedEnemy].ЗдоровьеВрага} единиц здоровья.");
+                        }
+                        else
+                        {
+                            ConsoleWriteLine($"CОПИ: {Персонажи[OrderOf].Имя} нанесла {AttackDialog.ЗначениеАтаки} единиц урона здоровью цели: " +
+                            $"{СписокТекущихВрагов[AttackDialog.SelectedEnemy].ИмяВрага}. Текущие значение здоровья врага стало " +
+                            $"{СписокТекущихВрагов[AttackDialog.SelectedEnemy].ЗдоровьеВрага} единиц здоровья.");
+                        }
                     }
                     else
                     {
-                        ConsoleWriteLine($"CОПИ: {Персонажи[OrderOf].Имя} нанесла {AttackDialog.ЗначениеАтаки} единиц урона здоровью цели: " +
-                        $"{СписокТекущихВрагов[AttackDialog.SelectedEnemy].ИмяВрага}. Текущие значение здоровья врага стало " +
-                        $"{СписокТекущихВрагов[AttackDialog.SelectedEnemy].ЗдоровьеВрага} единиц здоровья.");
-
+                        if (Персонажи[OrderOf].Пол == true)
+                        {
+                            ConsoleWriteLine($"CОПИ: {Персонажи[OrderOf].Имя} нанёс {AttackDialog.ЗначениеАтаки} единиц урона здоровью цели: " +
+                            $"{СписокТекущихВрагов[AttackDialog.SelectedEnemy].ИмяВрага}. {СписокТекущихВрагов[AttackDialog.SelectedEnemy].ИмяВрага} убит.");
+                        }
+                        else
+                        {
+                            ConsoleWriteLine($"CОПИ: {Персонажи[OrderOf].Имя} нанесла {AttackDialog.ЗначениеАтаки} единиц урона здоровью цели: " +
+                            $"{СписокТекущихВрагов[AttackDialog.SelectedEnemy].ИмяВрага}. {СписокТекущихВрагов[AttackDialog.SelectedEnemy].ИмяВрага} убит.");
+                        }
                     }
+
                     Random random = new Random();
                     Персонажи[OrderOf].Добавить_ОчкиОпыта((uint)random.Next(100, 150));
 
@@ -548,6 +561,19 @@ namespace Ролевая_игра__WPF_
                 adventureScripts.Choices_Add(2);
                 ConsoleWriteLine(2);
                 adventureScripts.Воспроизведение_Шагов();
+            }
+            else
+            {
+                int OrderOf = adventureScripts.OrderOf;
+
+                Magic magic = new Magic(Персонажи, СписокТекущихВрагов, ПорядокАтаки, OrderOf, МножительСилыРун);
+                magic.ShowDialog();
+                if (magic.DialogResult == true)
+                {
+                    ConsoleWriteLine(magic.ConsoleOutput);
+                    adventureScripts.IncreaseOrderOf();
+                    adventureScripts.Battle(СписокТекущихВрагов, ПорядокАтаки, СписокГероевВЗащите);
+                }
             }
         }
 
@@ -574,7 +600,7 @@ namespace Ролевая_игра__WPF_
 
                 }
                 adventureScripts.IncreaseOrderOf();
-                adventureScripts.Battle(СписокТекущихВрагов, adventureScripts.ПорядокАтаки, СписокГероевВЗащите);
+                adventureScripts.Battle(СписокТекущихВрагов, ПорядокАтаки, СписокГероевВЗащите);
             }
         }
 
@@ -682,6 +708,11 @@ namespace Ролевая_игра__WPF_
                         МножительСилыРун[0] = 1;
                         МножительСилыРун[1] = 1.2;
                         МножительСилыРун[2] = 1;
+
+                        foreach (Персонаж персонаж in Персонажи)
+                        {
+                            персонаж.RuneUpdate(МножительСилыРун);
+                        }
                     }
                     break;
                 case 2:
@@ -689,6 +720,11 @@ namespace Ролевая_игра__WPF_
                         МножительСилыРун[0] = 2;
                         МножительСилыРун[1] = 1;
                         МножительСилыРун[2] = 1.5;
+
+                        foreach (Персонаж персонаж in Персонажи)
+                        {
+                            персонаж.RuneUpdate(МножительСилыРун);
+                        }
                     }
                     break;
                 case 3:
@@ -696,6 +732,11 @@ namespace Ролевая_игра__WPF_
                         МножительСилыРун[0] = 3;
                         МножительСилыРун[1] = 0.75;
                         МножительСилыРун[2] = 2;
+
+                        foreach (Персонаж персонаж in Персонажи)
+                        {
+                            персонаж.RuneUpdate(МножительСилыРун);
+                        }
                     }
                     break;
                 default:
