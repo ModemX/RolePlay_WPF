@@ -500,7 +500,11 @@ namespace Ролевая_игра__WPF_
 
         private void Button_Choice_1_Click(object sender, RoutedEventArgs e)
         {
-            if (!IsBattleMode)
+            if (Button_Choice_1.Content.ToString() == "[Закрыть \nигру]")
+            {
+                Application.Current.Shutdown();
+            }
+            else if (!IsBattleMode)
             {
                 adventureScripts.Choices_Add(1);
                 ConsoleWriteLine(1);
