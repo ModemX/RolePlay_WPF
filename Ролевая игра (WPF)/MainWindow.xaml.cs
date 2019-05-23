@@ -24,7 +24,7 @@ namespace Ролевая_игра__WPF_
         /// Эффективность использования заклинаний: [x1.2] [x1] [x0.75]   
         /// Урон: [x1] [x1,5] [x2]
         /// </summary>
-        public double[] МножительСилыРун = new double[3];
+        public double[] МножительСилыРун = new double[3] { 1, 1.2, 1 };
         public bool IsBattleMode { get; set; } = false;
 
         public List<object> ПорядокАтаки = new List<object>();
@@ -45,7 +45,7 @@ namespace Ролевая_игра__WPF_
 
         private void MainWindow_Button_AddHero_Click(object sender, RoutedEventArgs e)
         {
-            AddHeroWindow = new AddHero(Персонажи.Count);
+            AddHeroWindow = new AddHero(Персонажи.Count, МножительСилыРун);
             AddHeroWindow.ShowDialog();
             bool? dialogResult = AddHeroWindow.DialogResult;
             bool flag = true;
@@ -360,7 +360,8 @@ namespace Ролевая_игра__WPF_
                             Convert.ToUInt32(строка["Очки_Здоровья"]),
                             Convert.ToUInt32(строка["Очки_Опыта"]),
                             Convert.ToUInt32(строка["Максимальная_мана"]),
-                            Convert.ToUInt32(строка["Очки_Маны"])
+                            Convert.ToUInt32(строка["Очки_Маны"]),
+                            МножительСилыРун
                             ));
                     }
                     else
@@ -380,7 +381,8 @@ namespace Ролевая_игра__WPF_
                             Convert.ToBoolean(строка["Может_двигаться"]),
                             Convert.ToUInt32(строка["Максимальное_здоровье"]),
                             Convert.ToUInt32(строка["Очки_Здоровья"]),
-                            Convert.ToUInt32(строка["Очки_Опыта"])
+                            Convert.ToUInt32(строка["Очки_Опыта"]),
+                            МножительСилыРун
                             ));
                     }
                 }

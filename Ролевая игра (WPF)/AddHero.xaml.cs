@@ -30,12 +30,15 @@ namespace Ролевая_игра__WPF_
         public uint Возраст { get; private set; }
         public bool Пол { get; private set; }
 
-        public AddHero(int ID)
+        private double[] МножительСилыРун;
+
+        public AddHero(int ID, double[] МножительСилыРун)
         {
             InitializeComponent();
             RecievedID = (uint)ID;
             GroupBox_Race.Visibility = Visibility.Hidden;
             GroupBox_HaveMagic.Visibility = Visibility.Hidden;
+            this.МножительСилыРун = МножительСилыРун;
         }
 
         public Персонаж Получить_Персонажа() => Новый_персонаж;
@@ -45,11 +48,11 @@ namespace Ролевая_игра__WPF_
         {
             if (Hero_DoHaveMagic.IsChecked == true)
             {
-                Новый_персонаж_с_магией = new Персонаж_с_магией(RecievedID, Имя, Пол, Возраст, Раса);
+                Новый_персонаж_с_магией = new Персонаж_с_магией(RecievedID, Имя, Пол, Возраст, Раса, МножительСилыРун);
             }
             else
             {
-                Новый_персонаж = new Персонаж(RecievedID, Имя, Пол, Возраст, Раса);
+                Новый_персонаж = new Персонаж(RecievedID, Имя, Пол, Возраст, Раса, МножительСилыРун);
             }
             DialogResult = true;
             Close();
