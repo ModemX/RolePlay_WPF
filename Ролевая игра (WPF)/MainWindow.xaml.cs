@@ -41,6 +41,12 @@ namespace Ролевая_игра__WPF_
 
             Menu_Grid.Visibility = Visibility.Visible;
             Adventure_Grid.Visibility = Visibility.Hidden;
+
+            KeyDown += (e, args) =>
+            {
+                if (args.Key == System.Windows.Input.Key.F1)
+                    System.Diagnostics.Process.Start("HelpFile.chm");
+            };
         }
 
         private void MainWindow_Button_AddHero_Click(object sender, RoutedEventArgs e)
