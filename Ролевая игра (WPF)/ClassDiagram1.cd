@@ -1,40 +1,176 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Ролевая_игра__WPF_.AddHero">
-    <Position X="0.75" Y="1" Width="1.5" />
-    <Compartments>
-      <Compartment Name="Methods" Collapsed="true" />
-    </Compartments>
+    <Position X="0.75" Y="1" Width="3" />
     <TypeIdentifier>
-      <HashCode>ALEIhIwCQBAwAKEUBCABAAAAIAEAAACIAgEEAAQEAGA=</HashCode>
+      <HashCode>ALEIhIwCQBAwAKEUBCABAAAAIAEAAACIEgEEAAQEAGA=</HashCode>
       <FileName>AddHero.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Ролевая_игра__WPF_.MainWindow">
-    <Position X="2.5" Y="1" Width="1.5" />
+    <Position X="7.75" Y="4" Width="3.5" />
     <TypeIdentifier>
-      <HashCode>AACAAAAAAAAAAAAAACAAIAAAAAAAAAAAAAAAQAgIBAA=</HashCode>
+      <HashCode>AHCAIAgAAgABCAEhASAAoAAIAQEFAABoEAQAAAgMhPA=</HashCode>
       <FileName>MainWindow.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Ролевая_игра__WPF_.Персонаж">
-    <Position X="4.25" Y="1" Width="1.5" />
-    <Compartments>
-      <Compartment Name="Methods" Collapsed="true" />
-    </Compartments>
+    <Position X="4.25" Y="1" Width="3" />
     <TypeIdentifier>
-      <HashCode>UBAQhAQAAAAEwAAEAAIAAAAAAABwAIAAAAAAAABAAAA=</HashCode>
+      <HashCode>0BQQhAQAAAAEwAAEAAIAAAAAAABwAIAAEAAAAABAAAA=</HashCode>
       <FileName>Персонаж.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Ролевая_игра__WPF_.Персонаж_с_магией">
-    <Position X="6.5" Y="1" Width="2.25" />
+    <Position X="7.75" Y="1" Width="3.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAQIAEAAIAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
       <FileName>Персонаж.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="Ролевая_игра__WPF_.Враги">
+    <Position X="14.25" Y="5" Width="3.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Ролевая_игра__WPF_.Враги.ГлаваСтражи">
+        <TypeIdentifier>
+          <NewMemberFileName>Враги.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAIAAAEAAAACAgAAAIAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Враги.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ролевая_игра__WPF_.Заклинания">
+    <Position X="11.75" Y="1" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Ролевая_игра__WPF_.Заклинания.Заклинание">
+        <TypeIdentifier>
+          <NewMemberFileName>Заклинания.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Ролевая_игра__WPF_.Заклинания.Лечение">
+        <TypeIdentifier>
+          <NewMemberFileName>Заклинания.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Ролевая_игра__WPF_.Заклинания.Воскрешение">
+        <TypeIdentifier>
+          <NewMemberFileName>Заклинания.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Ролевая_игра__WPF_.Заклинания.Огненный_Шар">
+        <TypeIdentifier>
+          <NewMemberFileName>Заклинания.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Ролевая_игра__WPF_.Заклинания.Заморозка">
+        <TypeIdentifier>
+          <NewMemberFileName>Заклинания.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Заклинания.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ролевая_игра__WPF_.Предметы">
+    <Position X="18.5" Y="1" Width="3.25" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Ролевая_игра__WPF_.Предметы.Банка_маны">
+        <TypeIdentifier>
+          <NewMemberFileName>Предметы.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Ролевая_игра__WPF_.Предметы.Среднее_Зелье_Лечения">
+        <TypeIdentifier>
+          <NewMemberFileName>Предметы.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Ролевая_игра__WPF_.Предметы.Зелье_маны">
+        <TypeIdentifier>
+          <NewMemberFileName>Предметы.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Ролевая_игра__WPF_.Предметы.Малое_Зелье_Лечения">
+        <TypeIdentifier>
+          <NewMemberFileName>Предметы.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Ролевая_игра__WPF_.Предметы.Зелье">
+        <TypeIdentifier>
+          <NewMemberFileName>Предметы.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Ролевая_игра__WPF_.Предметы.Бутылек_Маны">
+        <TypeIdentifier>
+          <NewMemberFileName>Предметы.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Ролевая_игра__WPF_.Предметы.Зелье_Лечения">
+        <TypeIdentifier>
+          <NewMemberFileName>Предметы.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Ролевая_игра__WPF_.Предметы.Фласка_маны">
+        <TypeIdentifier>
+          <NewMemberFileName>Предметы.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Ролевая_игра__WPF_.Предметы.Большое_Зелье_Лечения">
+        <TypeIdentifier>
+          <NewMemberFileName>Предметы.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Предметы.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ролевая_игра__WPF_.AdventureScripts">
+    <Position X="4.25" Y="7.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>BAQAgAAgAAAAAAAABAAECAAAAAAAAQCAAQAAAMAAAAA=</HashCode>
+      <FileName>AdventureScripts.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ролевая_игра__WPF_.Attack" BaseTypeListCollapsed="true">
+    <Position X="0.75" Y="10.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAADAAAAAAgAgAACAAAAAAQAAAAIAAAAAAA=</HashCode>
+      <FileName>Attack.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Ролевая_игра__WPF_.Inventory" BaseTypeListCollapsed="true">
+    <Position X="14.25" Y="10.25" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAABgAAAgAABAAQAAAAAAAAAAAAAQAAgABEA=</HashCode>
+      <FileName>Inventory.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Ролевая_игра__WPF_.Magic" BaseTypeListCollapsed="true">
+    <Position X="14.25" Y="1" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>RAAEAAAABACAAAAAAAAAAAAAAAFAAAIAEAAAAAAAAAA=</HashCode>
+      <FileName>Magic.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
