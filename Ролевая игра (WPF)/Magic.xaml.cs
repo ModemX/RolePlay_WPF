@@ -213,8 +213,8 @@ namespace Ролевая_игра__WPF_
             if (ComboBox_ВыборЗаклинания.SelectedIndex == 3)
             {
                 Заклинания.Заморозка Заклинание = new Заклинания.Заморозка(ПорядокАтаки[OrderOf] as Персонаж_с_магией, СписокВрагов[ComboBox_ЦельЗаклинания.SelectedIndex], МножительСилыРун[1]);
-                ConsoleOutput = $"{(ПорядокАтаки[OrderOf] as Персонаж_с_магией).Имя} заморозил {СписокВрагов[ComboBox_ЦельЗаклинания.SelectedIndex]}. " +
-                    $"{СписокВрагов[ComboBox_ЦельЗаклинания.SelectedIndex]} попускает ход.";
+                ConsoleOutput = $"{(ПорядокАтаки[OrderOf] as Персонаж_с_магией).Имя} заморозил {СписокВрагов[ComboBox_ЦельЗаклинания.SelectedIndex].ИмяВрага}. " +
+                    $"{СписокВрагов[ComboBox_ЦельЗаклинания.SelectedIndex].ИмяВрага} попускает ход.";
             }
             DialogResult = true;
         }
